@@ -6,10 +6,17 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.zut.pbai.helpers.LoginBean;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles requests for the application home page.
@@ -18,23 +25,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
+
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Shows login page.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		//formattedDateasdads
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+	public ModelAndView  login(HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView model = new ModelAndView("login");
+        LoginBean loginBean = new LoginBean();
+        model.addObject("loginBean", loginBean);
+
+		return model;
 	}
-	
+
+	/**
+	 * Login action.
+	 */
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+    public ModelAndView executeLogin(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("loginBean")LoginBean loginBean) {
+
+        ModelAndView model= null;
+        loginBean.getEmail();
+        model = new ModelAndView("home");
+
+		return model;
+	}
 }
