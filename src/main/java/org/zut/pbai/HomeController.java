@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles requests for the application home page.
  */
 @Controller
-@SessionAttributes("user")
+@SessionAttributes
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -61,8 +61,14 @@ public class HomeController {
 			if(uzytkownik.getRola().equals("ADMIN"))
 			{
 				model.addAttribute("admin", true);
+				request.getSession().setAttribute("admin",true);
+			}
+			else
+			{
+				request.getSession().setAttribute("admin",false);
 			}
 
+			request.getSession().setAttribute("user",uzytkownik);
 			return "home";
 		}
 		else{

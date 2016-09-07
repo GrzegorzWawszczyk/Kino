@@ -24,17 +24,19 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <c:if test="${admin}">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filmy
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="<c:url value="/listFilmView" />" >Lista filmow</a></li>
+                        <c:if test="${!admin}">
+                            <a href="<c:url value="/myBilets" />" >Zarezerwowane filmy</a>
+                        </c:if>
+
                         <li><a href="#">Dodac film</a></li>
                         <li><a href="#">Page 1-3</a></li>
                     </ul>
                 </li>
-            </c:if>
             <li><a href="#">Page 2</a></li>
             <li><a href="#">Page 3</a></li>
         </ul>

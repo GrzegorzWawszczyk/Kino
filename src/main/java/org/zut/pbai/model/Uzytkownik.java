@@ -122,7 +122,7 @@ public class Uzytkownik implements java.io.Serializable {
 		this.rola = rola;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "uzytkownik")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "uzytkownik")
 	public Set<Bilet> getBilets() {
 		return this.bilets;
 	}

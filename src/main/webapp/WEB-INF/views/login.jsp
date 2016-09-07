@@ -30,7 +30,7 @@
                             </div>
                             <div style="color: red">${error}</div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <button type="submit" class="btn btn-success btn-block">Lodgin</button>
+                            <button type="submit" class="btn btn-success btn-block">Login</button>
                             <p>New Member? <a href="signUp.html" class="">Sign up</a></p>
                         </fieldset>
                     </form>

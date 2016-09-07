@@ -17,13 +17,13 @@
     <c:if test="${!empty film.tytul}">
     	<tr>
     		<td>
-    			<form:label path="id">
+    			<form:label path="idfilm">
     				<spring:message text="ID"/>
     			</form:label>
     		</td>
     		<td>
-    			<form:input path="id" readonly="true" size="8"  disabled="true" />
-    			<form:hidden path="id" />
+    			<form:input path="idfilm" readonly="true" size="8"  disabled="true" />
+    			<form:hidden path="idfilm" />
     		</td>
     	</tr>
     	</c:if>
@@ -48,6 +48,36 @@
             <td><form:label path="wiek">wiek:</form:label></td>
             <td><form:input path="wiek" value="${film.wiek}"/></td>
         </tr>
+
+        <tr>
+            <td><form:label path="czasTrwania">czasTrwania:</form:label></td>
+            <td><form:input path="czasTrwania" value="${film.czasTrwania}" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="produkcja">produkcja:</form:label></td>
+            <td><form:input path="produkcja" value="${film.produkcja}" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="gatunek">gatunek:</form:label></td>
+            <td><form:input path="gatunek" value="${film.gatunek}"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="wersja">wersja:</form:label></td>
+            <td><form:input path="wersja" value="${film.wersja}" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="odLat">odLat:</form:label></td>
+            <td><form:input path="odLat" value="${film.odLat}"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="opis">opis:</form:label></td>
+            <td><form:input path="opis" value="${film.opis}" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="aktorzy">wiek:</form:label></td>
+            <td><form:input path="aktorzy" value="${film.aktorzy}" /></td>
+        </tr>
+
         <tr>
                     <c:if test="${!empty film.tytul}">
         				<input type="submit" value="<spring:message text='Edit Film'/>" />
