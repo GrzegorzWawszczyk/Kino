@@ -1,17 +1,32 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page session="false" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+ <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+ <%@ page session="false" %>
 
-<html>
-<head>
-    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
-    <link href="<c:url value="/resources/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" />" rel="stylesheet">
-    <title>Home</title>
-</head>
-<body>
+ <html>
+ <head>
+     <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
+     <link href="<c:url value="/resources/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" />" rel="stylesheet">
+     <title>Home</title>
+ </head>
+ <body>
 
-<form:form method="POST" commandName="film" action="/addFilm">
+  <c:url value="/addFilm" var="theAction"/>
+  <form:form method="POST" commandName="film" action="${theAction}" >
     <table>
+    <c:if test="${!empty film.tytul}">
+    	<tr>
+    		<td>
+    			<form:label path="id">
+    				<spring:message text="ID"/>
+    			</form:label>
+    		</td>
+    		<td>
+    			<form:input path="id" readonly="true" size="8"  disabled="true" />
+    			<form:hidden path="id" />
+    		</td>
+    	</tr>
+    	</c:if>
         <tr>
             <td><form:label path="idfilm">ID film:</form:label></td>
             <td><form:input path="idfilm" value="${film.idfilm}" readonly="true"/></td>
@@ -34,9 +49,16 @@
             <td><form:input path="wiek" value="${film.wiek}"/></td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit" value="Submit"/></td>
+                    <c:if test="${!empty film.tytul}">
+        				<input type="submit" value="<spring:message text='Edit Film'/>" />
+        			</c:if>
+        			<c:if test="${empty film.tytul}">
+        				<input type="submit" value="<spring:message text="Add Film"/>" />
+        			</c:if>
         </tr>
     </table>
-</form:form>
+  </form:form>
+
+
 </body>
 </html>

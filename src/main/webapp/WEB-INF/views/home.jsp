@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <a href="<c:url value="/addFilmView" />" >Dodac film</a>
+    <a href="<c:url value="/listFilmView" />" >Lista filmow</a>
 
 </body>
 </html>

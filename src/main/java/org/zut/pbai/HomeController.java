@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.zut.pbai.helpers.LoginBean;
 
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * Handles requests for the application home page.
  */
 @Controller
+@SessionAttributes("user")
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);

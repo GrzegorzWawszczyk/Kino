@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.zut.pbai.model.Film;
 
+import java.util.List;
+
 /**
  * Created by Vadim on 2016-09-04.
  */
@@ -30,9 +32,46 @@ public class FilmDAOImpl implements  FilmDAO {
     public void addFilm(Film film) {
 
         Session session = this.sessionFactory.getCurrentSession();
-        System.out.println("DAO impl " + film.getAktorzy());
-
-         session.save(film);
+        session.save(film);
 
     }
+
+    @Override
+    public void updateFilm(Film film) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.update(film);
+    }
+
+    @Override
+    public void removeFilm(int id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Film film = (Film) session.load(Film.class, new Integer(id));
+        if(null != film){
+            session.delete(film);
+        }
+    }
+
+    @Override
+    public List<Film> listOfFilms() {
+
+        Session session = this.sessionFactory.getCurrentSession();
+        List<Film> filmList = session.createQuery("from Film").list();
+        return filmList;
+    }
+
+    @Override
+    public Film getFilmById(int id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Film film = (Film) session.load(Film.class, new Integer(id));
+
+        if(null != film)
+        {
+            return film;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }
