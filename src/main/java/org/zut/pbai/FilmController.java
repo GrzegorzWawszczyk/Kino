@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.zut.pbai.dao.FilmDAO;
+import org.zut.pbai.dao.UserDAO;
 import org.zut.pbai.helpers.LoginBean;
 import org.zut.pbai.model.Film;
 

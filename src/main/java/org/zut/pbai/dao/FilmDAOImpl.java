@@ -20,13 +20,6 @@ public class FilmDAOImpl implements  FilmDAO {
 
     @Autowired
     protected SessionFactory sessionFactory;
-/*	 @Autowired
-	 @Qualifier("sessionFactory")
-	 private SessionFactory sessionFactory;
-	 
-	 private Session getCurrentSession() {
-		 return sessionFactory.getCurrentSession();
-	 }*/
 
     @Override
     public void addFilm(Film film) {

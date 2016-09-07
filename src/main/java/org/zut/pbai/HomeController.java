@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.zut.pbai.dao.UserDAO;
 import org.zut.pbai.helpers.LoginBean;
+import org.zut.pbai.model.Uzytkownik;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,9 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
+
+	@Autowired
+	UserDAO userDAO;
 
 	/**
 	 * Shows login page.
@@ -45,13 +50,26 @@ public class HomeController {
 	/**
 	 * Login action.
 	 */
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-    public ModelAndView executeLogin(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("loginBean")LoginBean loginBean) {
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String executeLogin(Model model,HttpServletRequest request, HttpServletResponse response, @ModelAttribute("loginBean")LoginBean loginBean) {
 
-        ModelAndView model= null;
         loginBean.getEmail();
-        model = new ModelAndView("home");
+		Uzytkownik uzytkownik =  userDAO.findUserByEmailAndPassword(loginBean.getEmail(), loginBean.getPassword());
 
-		return model;
+		if(uzytkownik != null) {
+
+			if(uzytkownik.getRola().equals("ADMIN"))
+			{
+				model.addAttribute("admin", true);
+			}
+
+			return "home";
+		}
+		else{
+			model.addAttribute("error", "Niepoprawne dane");
+			return "login";
+
+		}
+
 	}
 }
