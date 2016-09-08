@@ -18,7 +18,7 @@
                     <h3 class="panel-title">Welcome to MyCINEMA</h3>
                 </div>
                 <div class="panel-body">
-                    <form name="login" method="post"  action="<c:url value='/login' />" >
+                    <form name="login" method="POST"  action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" >
                         <fieldset>
                             login:aaa@aa.aa
                             haslo:aaa
@@ -29,9 +29,10 @@
                                 <input class="form-control" placeholder="Password" name="password" type="password" value="">
                             </div>
                             <div style="color: red">${error}</div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <!-- Change this to a button or input when using this as a form -->
                             <button type="submit" class="btn btn-success btn-block">Login</button>
-                            <p>New Member? <a href="signUp.html" class="">Sign up</a></p>
+                            <p>New Member? <a href="${pageContext.request.contextPath}/signup" class="">Sign up</a></p>
                         </fieldset>
                     </form>
                 </div>

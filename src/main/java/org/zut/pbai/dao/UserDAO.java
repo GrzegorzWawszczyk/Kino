@@ -7,4 +7,6 @@ import org.zut.pbai.model.Uzytkownik;
  */
 public interface UserDAO {
     Uzytkownik findUserByEmailAndPassword(String email, String password);
+    Uzytkownik findUserByEmail(String email);
+    public void insert(Uzytkownik user);
 }

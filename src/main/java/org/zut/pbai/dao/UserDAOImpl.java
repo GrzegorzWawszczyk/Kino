@@ -1,5 +1,5 @@
 package org.zut.pbai.dao;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +42,37 @@ public class UserDAOImpl implements  UserDAO {
         else {
             return null;
         }
+    }
+    
+    @Override
+    public Uzytkownik findUserByEmail(String email) {
+
+        Session session = this.sessionFactory.getCurrentSession();
+        List<Uzytkownik> uzytkownikList = new ArrayList<Uzytkownik>();
+
+        uzytkownikList = sessionFactory.getCurrentSession().createQuery("from Uzytkownik where email=?")
+                .setParameter(0,email).list();
+
+        if(uzytkownikList.size() > 0 && uzytkownikList.get(0) != null)
+        {
+            return  uzytkownikList.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+    
+    @Override
+    public void insert(Uzytkownik user)
+    {
+    	Session session = this.sessionFactory.getCurrentSession();
+    	if(user != null)
+    	{
+    		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+    		user.setHaslo( passwordEncoder.encode(user.getHaslo()));
+    		session.save(user);
+    		System.out.println(user.getHaslo());
+    	}
+        session.save(user);
     }
 }
