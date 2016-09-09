@@ -9,9 +9,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -54,11 +56,22 @@ public class HomeController {
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView  start(HttpServletRequest request, HttpServletResponse response) {
 
-        ModelAndView model = new ModelAndView("login");
-        LoginBean loginBean = new LoginBean();
-        model.addObject("loginBean", loginBean);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object user = (auth != null) ? auth.getPrincipal() :  null;
 
-		return model;
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
+		else
+		{
+			ModelAndView model = new ModelAndView("home");
+			return model;
+		}
 	}
 
 	@RequestMapping(value = { "/home**" }, method = RequestMethod.GET)
@@ -96,7 +109,27 @@ public class HomeController {
 
 		return model;
 	}
-	
+
+	/**
+	 * Login action.
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response,
+							   @RequestParam(value = "error", required = false) String error,
+							  @RequestParam(value = "logout", required = false) String logout) {
+
+		ModelAndView model = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+
+		model.setViewName("redirect:/");
+
+		return model;
+	}
+
+
 	@RequestMapping(value = { "/signup" }, method = RequestMethod.GET)
 	public ModelAndView  signUp(HttpServletRequest request, HttpServletResponse response) {
 
