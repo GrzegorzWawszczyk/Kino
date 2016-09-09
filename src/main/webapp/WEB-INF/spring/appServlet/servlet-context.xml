@@ -3,10 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
+
+  	<mvc:resources mapping="/resources/**" location="/resources/"/>
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -27,10 +32,50 @@
 		destroy-method="close">
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<beans:property name="url"
-			value="jdbc:mysql://localhost:3306/mydb" />
-		<beans:property name="username" value="root" />
-		<beans:property name="password" value="" />
+			value="jdbc:mysql://pbai2016db.cj6jfrry5swq.eu-west-1.rds.amazonaws.com:3306/pbai2016db" />
+		<beans:property name="username" value="pbai2016db" />
+		<beans:property name="password" value="pbai2016db" />
 	</beans:bean>
-	
-	
+
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="sessionFactory"
+				class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>org.zut.pbai.model.Film</beans:value>
+				<beans:value>org.zut.pbai.model.Bilet</beans:value>
+				<beans:value>org.zut.pbai.model.BiletRodzaj</beans:value>
+				<beans:value>org.zut.pbai.model.Sala</beans:value>
+				<beans:value>org.zut.pbai.model.Seans</beans:value>
+				<beans:value>org.zut.pbai.model.Uzytkownik</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<beans:prop key="javax.persistence.validation.mode">none</beans:prop>
+				<!--<beans:prop key="hibernate.current_session_context_class">thread</beans:prop>-->
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+	<context:component-scan base-package="org.zut.pbai" />
+	<context:component-scan base-package="org.zut.pbai.dao" />
+	<context:component-scan base-package="org.zut.pbai.helpers" />
+<!--
+	<tx:annotation-driven transaction-manager="transactionManager" />-->
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<beans:bean id="transactionManager"
+				class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="sessionFactory" />
+	</beans:bean>
+
+
+
 </beans:beans>

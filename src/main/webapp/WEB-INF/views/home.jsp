@@ -2,21 +2,17 @@
 <%@taglib uri="http://kwonnam.pe.kr/jsp/template-inheritance" prefix="layout" %>
 <%@page language="Java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" %>
-<layout:extends name="base.jsp">
-
-<%--<layout:put block="css" type="REPLACE">
-	<c:url value="/resources/css/tmp.css" />
-</layout:put>--%>
-
-<layout:put block="content" type="REPLACE"><!-- Inne opcje: APPEND, PREPEND -->
-
-<!-- TUTAJ ZAWARTOSC -->
-
-<h1 style="text-align:center">WITAJ NA STRONIE NASZEGO KINA</h1>
-
-<!-- KONIEC ZAWARTOSCi -->
-
-</layout:put>
 
 
-</layout:extends>
+<html>
+<head>
+    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" />" rel="stylesheet">
+    <title>Home</title>
+</head>
+<body>
+
+    <a href="<c:url value="/listFilmView" />" >Lista filmow</a>
+
+</body>
+</html>
