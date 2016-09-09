@@ -1,5 +1,7 @@
 package org.zut.pbai.dao;
 
+import java.util.List;
+
 import org.zut.pbai.model.Seans;
 
 /**
@@ -8,5 +10,5 @@ import org.zut.pbai.model.Seans;
 public interface SeansDAO {
 
     public Seans getsSeansById(int id);
-
+    public List<Seans> listOfSeanse();
 }

@@ -11,7 +11,7 @@
 		<headers>
 			<cache-control />
 		</headers>
-		<intercept-url pattern="/home**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/signup**" access="isAnonymous()" />
 		<form-login login-page="/login" 
 		    default-target-url="/home"

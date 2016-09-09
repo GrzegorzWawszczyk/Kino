@@ -27,19 +27,19 @@ public class Sala implements java.io.Serializable {
 	private Integer iloscMiejsc;
 	private String typ;
 	private Integer liczbaRzedow;
-	private Integer liczbaMiejsc;
+	private Integer liczbaKolumn;
 	private Set<Seans> seanses = new HashSet<Seans>(0);
 
 	public Sala() {
 	}
 
-	public Sala(String nazwa, Integer iloscMiejsc, String typ, Integer liczbaRzedow, Integer liczbaMiejsc,
+	public Sala(String nazwa, Integer iloscMiejsc, String typ, Integer liczbaRzedow, Integer liczbaKolumn,
 			Set<Seans> seanses) {
 		this.nazwa = nazwa;
 		this.iloscMiejsc = iloscMiejsc;
 		this.typ = typ;
 		this.liczbaRzedow = liczbaRzedow;
-		this.liczbaMiejsc = liczbaMiejsc;
+		this.liczbaKolumn = liczbaKolumn;
 		this.seanses = seanses;
 	}
 
@@ -91,13 +91,13 @@ public class Sala implements java.io.Serializable {
 		this.liczbaRzedow = liczbaRzedow;
 	}
 
-	@Column(name = "liczba_miejsc")
-	public Integer getLiczbaMiejsc() {
-		return this.liczbaMiejsc;
+	@Column(name = "liczba_kolumn")
+	public Integer getLiczbaKolumn() {
+		return this.liczbaKolumn;
 	}
 
-	public void setLiczbaMiejsc(Integer liczbaMiejsc) {
-		this.liczbaMiejsc = liczbaMiejsc;
+	public void setLiczbaKolumn(Integer liczbaKolumn) {
+		this.liczbaKolumn = liczbaKolumn;
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "sala")
