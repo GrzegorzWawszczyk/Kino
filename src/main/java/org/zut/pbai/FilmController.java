@@ -38,15 +38,6 @@ public class FilmController {
 
         ModelAndView model = new ModelAndView("listOfFilms");
         List<Film> filmList = filmDAO.listOfFilms();
-        Object aBoolean = request.getSession().getAttribute("admin");
-        if(aBoolean.equals(true))
-        {
-            model.addObject("admin", true);
-        }
-        else
-        {
-            model.addObject("admin", false);
-        }
 
         model.addObject("filmList", filmList);
         return model;
@@ -129,7 +120,6 @@ public class FilmController {
 
         ModelAndView model = new ModelAndView("myBilets");
         Uzytkownik uzytkownik = (Uzytkownik) request.getSession().getAttribute("user");
-
 
         List<Bilet> biletList = biletDAO.listOfBiletsByUser(uzytkownik.getIdklient());
         model.addObject("biletList", biletList);

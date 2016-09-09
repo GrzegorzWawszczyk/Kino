@@ -10,10 +10,12 @@
 </head>
 <body>
 
-<c:if test="${admin}">
+<c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
 
     <a href="<c:url value="/addFilmView" />" >Dodac film</a>
 </c:if>
+
+
 
     <table class="table table-bordered">
       <thead>

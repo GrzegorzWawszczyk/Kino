@@ -9,6 +9,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.UserDAO;
 import org.zut.pbai.helpers.Validator;
 import org.zut.pbai.helpers.LoginBean;
@@ -42,6 +46,8 @@ public class HomeController {
 	@Autowired
 	UserDAO userDAO;
 
+	@Autowired
+	FilmDAO filmDAO;
 	/**
 	 * Shows login page.
 	 */
@@ -50,10 +56,6 @@ public class HomeController {
 
         ModelAndView model = new ModelAndView("login");
         LoginBean loginBean = new LoginBean();
-      // Uzytkownik user = new Uzytkownik(
-     //   "admin123", "test1", "test2","test2@test.com", 123123, "123123", "ROLE_ADMIN",
-	//	new HashSet<Bilet>());
-     //   userDAO.insert(user);
         model.addObject("loginBean", loginBean);
 
 		return model;
@@ -63,11 +65,13 @@ public class HomeController {
 	public ModelAndView  home(HttpServletRequest request, HttpServletResponse response) {
 
         ModelAndView model = new ModelAndView("home");
-        LoginBean loginBean = new LoginBean();
-      // Uzytkownik user = new Uzytkownik(
-     //   "admin123", "test1", "test2","test2@test.com", 123123, "123123", "ROLE_ADMIN",
-	//	new HashSet<Bilet>());
-     //   userDAO.insert(user);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		//add user to session
+		Object user = (auth != null) ? auth.getPrincipal() :  null;
+		request.getSession().setAttribute("user",userDAO.findUserByEmail(((User) user).getUsername()) );
+
+		LoginBean loginBean = new LoginBean();
         model.addObject("loginBean", loginBean);
 
 		return model;

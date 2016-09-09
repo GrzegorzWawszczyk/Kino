@@ -20,8 +20,6 @@
                 <div class="panel-body">
                     <form name="login" method="POST"  action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" >
                         <fieldset>
-                            login:aaa@aa.aa
-                            haslo:aaa
                             <div class="form-group">
                                 <input class="form-control" placeholder="E-mail" name="email" type="login" autofocus>
                             </div>
