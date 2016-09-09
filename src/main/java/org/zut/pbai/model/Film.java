@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Film implements java.io.Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer idfilm;
@@ -169,7 +169,7 @@ public class Film implements java.io.Serializable {
 		this.aktorzy = aktorzy;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "film")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "film")
 	public Set<Seans> getSeanses() {
 		return this.seanses;
 	}
@@ -178,7 +178,7 @@ public class Film implements java.io.Serializable {
 		this.seanses = seanses;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "film")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "film")
 	public Set<Bilet> getBilets() {
 		return this.bilets;
 	}

@@ -46,7 +46,6 @@
 			<beans:list>
 				<beans:value>org.zut.pbai.model.Film</beans:value>
 				<beans:value>org.zut.pbai.model.Bilet</beans:value>
-				<beans:value>org.zut.pbai.model.BiletRodzaj</beans:value>
 				<beans:value>org.zut.pbai.model.Sala</beans:value>
 				<beans:value>org.zut.pbai.model.Seans</beans:value>
 				<beans:value>org.zut.pbai.model.Uzytkownik</beans:value>
