@@ -129,7 +129,7 @@ public class HomeController {
 	        	{
 	        		 error += "Haslo musi posiadac:"
 	        				+ " Wielka litere, mala litere, cyfre"
-	        				+ " i znak specjalny(“@#$%”) oraz conajmniej 8 znaków\n";
+	        				+ " i znak specjalny(@#$%) oraz conajmniej 8 znakow\n";
 	        	}
 	        	if(!user.getHaslo().equals(request.getParameter("haslo2")))
 	        	{
@@ -141,7 +141,7 @@ public class HomeController {
 	     		}
 	        		 
 	        	 if(error == ""){
-	        		model.addAttribute("error", "U¿ytkownik zosta³ dodany! mo¿esz siê zalogowaæ!");
+	        		model.addAttribute("error", "Uzytkownik zostal dodany! mozesz sie zalogowac!");
 	        		user.setRola("ROLE_USER");
 	        		userDAO.insert(user);
 	        		return "login";
