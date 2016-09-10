@@ -1,7 +1,16 @@
 package org.zut.pbai;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Properties;
 
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +27,8 @@ import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.SalaDAO;
 import org.zut.pbai.dao.SeansDAO;
 import org.zut.pbai.dao.UserDAO;
+import org.zut.pbai.helpers.MailMail;
+import org.zut.pbai.helpers.PDFCreator;
 import org.zut.pbai.model.Bilet;
 import org.zut.pbai.model.Film;
 import org.zut.pbai.model.Sala;
@@ -25,7 +36,15 @@ import org.zut.pbai.model.Seans;
 import org.zut.pbai.model.Uzytkownik;
 
 
-
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,6 +69,15 @@ public class TicketController {
     
     @Autowired
     SalaDAO salaDAO;
+
+    @Autowired
+    MailMail mailMail;
+
+    @Autowired
+    PDFCreator pdfCreator;
+
+    @Autowired
+    ServletContext servletContext;
     /**
      * editFilm action.
      */
@@ -71,9 +99,25 @@ public class TicketController {
         bilet.setCena("50");
         bilet.setStan("zarezerwowany");
         biletDAO.addBilet(bilet);
+
+
+        String toAddr = "pbai2016zut@gmail.com";
+        String fromAddr = "pbai2016zut@gmail.com";
+        // email subject
+        String subject1 = "Został kupiony bilet na filWitamy " + uzytkownik.getImie() + uzytkownik.getNazwisko() + " na naszym serwisie";
+
+        // email body
+        String body = "Zyczymy udanego korzystania z naszego serwisu";
+
+        pdfCreator.createPdfWithBilet(bilet,uzytkownik);
+
+
+
         model.addObject("film", film);
         return model;
     }
+
+
     
     @RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
     public ModelAndView bookTicket(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id)

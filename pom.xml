@@ -93,6 +93,16 @@
 			<artifactId>spring-orm</artifactId>
 			<version>4.0.3.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.0.6</version>
+        </dependency>
 		<!-- Java Mail API -->
 		<dependency>
 			<groupId>javax.mail</groupId>
