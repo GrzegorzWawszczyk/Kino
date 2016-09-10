@@ -15,19 +15,28 @@
 <table class="table table-bordered">
     <thead>
     <tr>
-        <th>Tytul</th>
-        <th> Seans</th>
+        <th>Tytul filmu</th>
+        <th>Data</th>
         <th>Stan</th>
-        <th>Usuwanie</th>
+        <th>miejsce></th>
+        <th>Anuluj/Zwroc</th>
+        <th>Kup bilet </th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${biletList}" var="bilet">
         <tr>
             <td>${bilet.film.tytul}</td>
-            <td>${bilet.seans}</td>
+            <td>${bilet.seans.data}</td>
             <td>${bilet.stan}</td>
-            <td><a href="<c:url value='/removeFilm/${film.idfilm}' />" >Delete</a></td>
+            <td>${bilet.miejsce}</td>
+             <c:if test="${bilet.stan == 'zarezerwowany'}">
+            <td><a href="<c:url value='/changeStanBilet/${bilet.idbilet}' />" >Anuluj</a></td>
+            <td><a href="<c:url value='/payment' />" >Kup</a></td>
+            </c:if>
+             <c:if test="${bilet.stan == 'kupiony'}">
+            <td><a href="<c:url value='/changeStanBilet/${bilet.idbilet}' />" >Anuluj</a></td>
+            </c:if>
         </tr>
     </c:forEach>
     </tbody>

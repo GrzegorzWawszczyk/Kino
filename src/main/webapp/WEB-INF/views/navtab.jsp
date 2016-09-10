@@ -15,29 +15,22 @@
             <a class="navbar-brand" href="#">WebSiteName</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="<c:url value="/home" />">Home</a></li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filmy
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="<c:url value="/listFilmView" />" >Lista filmow</a></li>
-                    <c:if test="${!admin}">
-                        <a href="<c:url value="/myBilets" />" >Zarezerwowane filmy</a>
-                    </c:if>
-
-                    <li><a href="#">Dodac film</a></li>
+                   <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>
                     <li><a href="#">Page 1-3</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Seanse
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Moje konto 
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>
-                    <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
-                        <li><a href="<c:url value="/listSeansView" />" >Dodaj seans</a></li>
-                    </c:if>
-                    <li><a href="#">Page 1-3</a></li>
+                    <li><a href="<c:url value="/myBilets" />" >Moje bilety</a></li>
+                    <li><a href="<c:url value="/changePassword" />" >Zmien haslo</a></li>
                 </ul>
             </li>
             <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
@@ -46,11 +39,10 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="<c:url value="/admin/allTicketsView" />" >Lista biletow</a></li>
+                        <li><a href="<c:url value="/listSeansView" />" >Dodaj seans</a></li>
                     </ul>
                 </li>
             </c:if>
-            <li><a href="#">Page 2</a></li>
-            <li><a href="#">Page 3</a></li>
             <li><a href="<c:url value="/logout" />" >Logout</a></li>
         </ul>
     </div>

@@ -17,6 +17,8 @@
     <tr>
         <th>Tytul</th>
         <th> Seans</th>
+        <th>Uzytkownik</th>
+        <th>Miejsce</th>
         <th>Stan</th>
         <th>Usun</th>
         <th>Edytuj</th>
@@ -27,6 +29,8 @@
         <tr>
             <td>${bilet.film.tytul}</td>
             <td>${bilet.seans}</td>
+            <td>${bilet.uzytkownik.email}</td>
+            <td>${bilet.miejsce}</td>
             <td>${bilet.stan}</td>
             <td><a href="<c:url value='/admin/removeBilet/${bilet.idbilet}' />" >Usun</a></td>
             <td><a href="<c:url value='/admin/editTicket/${bilet.idbilet}' />" >Zmien</a></td>

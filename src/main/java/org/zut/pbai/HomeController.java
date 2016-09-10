@@ -56,6 +56,9 @@ public class HomeController {
 
 	@Autowired
 	FilmDAO filmDAO;
+	
+	@Autowired
+	org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder;
 	/**
 	 * Shows login page.
 	 */
@@ -193,5 +196,55 @@ public class HomeController {
 	        	model.addAttribute("error", error);
 	        	return "signup";
 	  }
+	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.GET)
+	public ModelAndView  changePassword(HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView model = new ModelAndView("changePassword");
+		return model;
+	}
+	@RequestMapping(value = { "/changePasswordCommand" }, method = RequestMethod.POST)
+	public String  changePasswordCommand(HttpServletRequest request, ModelMap model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
+        String error = "";
+		Validator validor = new Validator();
+	        	if( (request.getParameter("haslo")== null) || 
+	        		(request.getParameter("haslo1")== null) || 
+	        		(request.getParameter("haslo2")== null)
+	        	)
+	        	{
+	        		error += "wypelnij wszystkie pola!\n";
+	        		return "changePassword";
+	        	}  
+	        			
+	        	if(
+	        			(validor.validatePassword(request.getParameter("haslo1")) != true) ||
+	        			(validor.validatePassword(request.getParameter("haslo2")) != true)
+	        	)
+	        	{
+	        		 error += "Haslo musi posiadac:"
+	        				+ " Wielka litere, mala litere, cyfre"
+	        				+ " i znak specjalny(@#$%) oraz conajmniej 8 znakow\n";
+	        	}
+	        	if(!request.getParameter("haslo1").equals(request.getParameter("haslo2")))
+	        	{
+	        		error += "Hasla musza sie zgadzac!\n";
+	     		}
+	        	 if(encoder.matches(request.getParameter("haslo"), uzytkownik.getHaslo()))
+	        	{
+	        		 error += "Niepoprawne stare haslo!<br />";
+	     		}
+	        		 
+	        	 if(error == ""){
+	        		model.addAttribute("error", "Haslo zostalo zmienione!");
+	        		uzytkownik.setHaslo(request.getParameter("haslo1"));
+	        		userDAO.update(uzytkownik);
+	        		return "changePassword";
+	        	 }
+	        	
+	        	model.addAttribute("error", error);
+	        	return "changePassword";
+	}
+	
 	
 }

@@ -26,13 +26,16 @@ public class BiletDAOImpl implements  BiletDAO{
     @Override
     public void addBilet(Bilet bilet) {
 
+    	System.out.println("TEST: " + bilet.getMiejsce());
         Session session = this.sessionFactory.getCurrentSession();
         if(this.listOfBiletsBySeansAndSeat(bilet.getSeans().getIdseans(), bilet.getMiejsce()) == null)
         {
+        	System.out.println("TEST3: " + bilet.getMiejsce());
         	if(Integer.parseInt(bilet.getMiejsce()) <= (bilet.getSeans().getSala().getLiczbaKolumn()
         			* bilet.getSeans().getSala().getLiczbaRzedow())
         	)
         	{
+        		System.out.println("TEST2: " + bilet.getMiejsce());
         		session.save(bilet);
         	}
         }
@@ -49,9 +52,10 @@ public class BiletDAOImpl implements  BiletDAO{
         			* bilet.getSeans().getSala().getLiczbaRzedow())
         	)
         	{
-        		session.update(bilet);
+        		session.merge(bilet);
         	}
         }
+        
     }
     
     @Override
@@ -75,14 +79,24 @@ public class BiletDAOImpl implements  BiletDAO{
 
         return biletList;
     }
+    public List<Bilet> listOfBiletsBySeansAndSeatAvaible(int id, String seat) {
+        Session session = this.sessionFactory.getCurrentSession();
+        List<Bilet> biletList = new ArrayList<Bilet>();
+
+        biletList = sessionFactory.getCurrentSession().createQuery("from Bilet where idseans=? and miejsce = ? and (stan = ? or stan = ?)")
+                .setParameter(0,id).setParameter(1,seat).setParameter(2, "zarezerwowany").setParameter(3, "kupiony").list();
+
+        return biletList.isEmpty() ? null : biletList;
+    }
+    
     public List<Bilet> listOfBiletsBySeansAndSeat(int id, String seat) {
         Session session = this.sessionFactory.getCurrentSession();
         List<Bilet> biletList = new ArrayList<Bilet>();
 
-        biletList = sessionFactory.getCurrentSession().createQuery("from Bilet where idseans=? and miejsce = ?")
-                .setParameter(0,id).setParameter(1,seat).list();
+        biletList = sessionFactory.getCurrentSession().createQuery("from Bilet where idseans=? and miejsce = ? and (stan = ? or stan = ?)")
+                .setParameter(0,id).setParameter(1,seat).setParameter(2, "zarezerwowany").setParameter(3, "kupiony").list();
 
-        return biletList;
+        return biletList.isEmpty() ? null : biletList;
     }
     @Override
     public List<Bilet> listOfBilets() {

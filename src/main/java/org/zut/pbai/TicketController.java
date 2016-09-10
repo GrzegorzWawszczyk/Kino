@@ -91,13 +91,16 @@ public class TicketController {
 		for (Bilet b : list){
 			
 			if (flag == false){
-				booked += b.getMiejsce();
-				System.out.println("numer: "+ b.getMiejsce());
-				flag = true;
+				if(b.getStan().equals("kupiony") || b.getStan().equals("zarezerwowany")){
+					booked += b.getMiejsce();
+					System.out.println("numer: "+ b.getMiejsce());
+					flag = true;
+				}
 			}
 			else{
-				
-				booked += ", " +b.getMiejsce();
+				if(b.getStan().equals("kupiony") || b.getStan().equals("zarezerwowany")){
+					booked += ", " +b.getMiejsce();
+				}
 			}
 		}
 		System.out.println("booked: "+ booked);
@@ -128,12 +131,13 @@ public class TicketController {
 			b.setSeans(seansDAO.getsSeansById( Integer.parseInt(request.getParameter("seansid"))));
 			b.setFilm(b.getSeans().getFilm());
 			b.setMiejsce(l);
-			b.setStan("zarezerwowane");
+			b.setStan("zarezerwowany");
+			System.out.println(b.getMiejsce());
 			biletDAO.addBilet(b);
 			//biletDAO.addBilet;(new Book(0, book.getMsid(),Integer.parseInt(l),book.getUsername()));
 		}
 	    model.addAttribute("error","Zarezerwowano!");
-		return "redirect:/listFilmView";
+		return "redirect:/myBilets";
 	   }
     @RequestMapping(value = "/admin/editTicketCommand", method = RequestMethod.POST)
     public ModelAndView editTicketCommand(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("bilet")Bilet bilet) {
@@ -141,7 +145,7 @@ public class TicketController {
       //  bilet.getIdfilm();
     	
     	Bilet b = biletDAO.getBiletById(bilet.getIdbilet());
-    	b.setTyp(((String)request.getParameter("typ")));
+    	b.setStan(((String)request.getParameter("typ")));
     	bilet = b;
         ModelAndView model = new ModelAndView("redirect://admin/allTicketsView");
         biletDAO.updateBilet(bilet);
@@ -159,6 +163,24 @@ public class TicketController {
         return model;
     }
     
+    
+    @RequestMapping(value = "/changeStanBilet/{id}", method = RequestMethod.GET)
+    public ModelAndView changeStanTicket(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+
+        ModelAndView model = new ModelAndView("redirect://myBilets");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
+
+        Bilet bilet = biletDAO.getBiletById(id);
+        if(bilet == null) return model;
+    	if(uzytkownik.getIdklient() != bilet.getUzytkownik().getIdklient()) return model;
+    	if(bilet.getStan().equals("zarezerwowany")) bilet.setStan("anulowany");
+    	if(bilet.getStan().equals("kupiony")) bilet.setStan("doZwrotu");
+    	biletDAO.updateBilet(bilet);
+        return model;
+    }
+    
     @RequestMapping(value = "/admin/allTicketsView", method = RequestMethod.GET)
     public ModelAndView listFilmView(HttpServletRequest request, HttpServletResponse response) {
 
@@ -169,4 +191,11 @@ public class TicketController {
         model.addObject("biletList", filmList);
         return model;
     }
+    
+    @RequestMapping(value = { "/payment" }, method = RequestMethod.GET)
+	public ModelAndView  payment(HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView model = new ModelAndView("payment");
+		return model;
+	}
 }
