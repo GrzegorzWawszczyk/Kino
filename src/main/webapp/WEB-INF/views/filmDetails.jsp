@@ -10,6 +10,7 @@
     <title>Home</title>
 </head>
 <body>
+<jsp:include page="navtab.jsp"></jsp:include>
 
 <c:url value="/addFilm" var="theAction"/>
 <form:form method="POST" commandName="film" action="${theAction}" >

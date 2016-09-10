@@ -9,6 +9,8 @@
     <title>Home</title>
 </head>
 <body>
+<jsp:include page="navtab.jsp"></jsp:include>
+
 
 <c:if test="${admin}">
 
@@ -25,7 +27,7 @@
            <th>Edycja</th>
            <th>Usuwanie</th>
            </c:if>
-           <th>Szczegol‚y</th>
+           <th>Szczegolï¿½y</th>
            <th>Akcja</th>
         </tr>
       </thead>

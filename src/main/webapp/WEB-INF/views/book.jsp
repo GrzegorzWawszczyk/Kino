@@ -142,6 +142,7 @@
     </script>
 
 
+<jsp:include page="navtab.jsp"></jsp:include>
 
 
 	<h2> Wybierz miejsca klikajac na interesujace Cie miejsce:</h2>

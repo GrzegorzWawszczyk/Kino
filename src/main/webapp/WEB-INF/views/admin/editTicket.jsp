@@ -11,6 +11,7 @@
  </head>
  <body>
 
+ <jsp:include page="../navtab.jsp"></jsp:include>
 
 
 <form:form name="login" method="POST" modelAttribute="bilet" action="../editTicketCommand/" >

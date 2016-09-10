@@ -9,6 +9,7 @@
     <title>Home</title>
 </head>
 <body>
+<jsp:include page="navtab.jsp"></jsp:include>
 
 
 <table class="table table-bordered">

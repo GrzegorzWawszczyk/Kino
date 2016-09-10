@@ -9,6 +9,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.UserDAO;
+import org.zut.pbai.helpers.MailMail;
 import org.zut.pbai.helpers.Validator;
 import org.zut.pbai.helpers.LoginBean;
 import org.zut.pbai.model.Bilet;
@@ -47,6 +50,9 @@ public class HomeController {
 
 	@Autowired
 	UserDAO userDAO;
+
+	@Autowired
+	MailMail mailMail;
 
 	@Autowired
 	FilmDAO filmDAO;

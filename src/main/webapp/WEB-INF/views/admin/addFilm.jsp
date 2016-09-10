@@ -11,7 +11,7 @@
  </head>
  <body>
 
- <jsp:include page="navtab.jsp"></jsp:include>
+ <jsp:include page="../navtab.jsp"></jsp:include>
 
 
  <c:url value="/addFilm" var="theAction"/>
