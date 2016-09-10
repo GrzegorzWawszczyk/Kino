@@ -33,6 +33,26 @@
                     <li><a href="#">Page 1-3</a></li>
                 </ul>
             </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Seanse
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>
+                    <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
+                        <li><a href="<c:url value="/listSeansView" />" >Dodaj seans</a></li>
+                    </c:if>
+                    <li><a href="#">Page 1-3</a></li>
+                </ul>
+            </li>
+            <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administracja
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<c:url value="/admin/allTicketsView" />" >Lista biletow</a></li>
+                    </ul>
+                </li>
+            </c:if>
             <li><a href="#">Page 2</a></li>
             <li><a href="#">Page 3</a></li>
             <li><a href="<c:url value="/logout" />" >Logout</a></li>
