@@ -6,7 +6,7 @@
 <head>
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" />" rel="stylesheet">
-    <script src="http://listjs.com/no-cdn/list.js"></script>
+    <script src="<c:url value="/resources/js/list.js" />"></script>
     <title>Home</title>
 </head>
 <body>
