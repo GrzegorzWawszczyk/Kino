@@ -174,18 +174,19 @@ public class HomeController   {
 		   ModelMap model, HttpServletRequest request) 
 	{       	
 		String error = "";
-		Validator validor = new Validator();
+		
 	        	if( (user.getHaslo() == null) || (user.getHaslo().equals("")) || 
 	        			(user.getEmail() == null) ||(user.getEmail().equals("")) ||
 	        			(user.getImie() == null) ||(user.getImie().equals("")) ||	
 	        			(user.getNazwisko() == null) ||(user.getNazwisko().equals("")) ||
 	        			(user.getPesel() == null) ||(user.getPesel().equals("")) ||
-	        			(user.getTel() == null) ||	(user.getTel().toString().equals(""))
+	        			(user.getTel() == null) ||	(user.getTel().equals(""))
 	        	)
 	        	{
 	        		error += "wypelnij wszystkie pola!\n";
 	        	
 	        	}  
+	        	Validator validor = new Validator(user.getPesel());
 	        	if(userDAO.findUserByEmail(user.getEmail()) != null) 
 	        	{
 	        		error += "juz jest taki uzytkownik!\n";
@@ -208,7 +209,19 @@ public class HomeController   {
 	        	{
 	        		 error += "Adresy email musza sie zgadzac!<br />";
 	     		}
-	        		 
+	        	 if(!validor.isValid())
+	        	 {
+	        		 error += "Prosze podac prawidlowy pesel!<br />";
+	        	 }
+	        	 if(  
+		        			(user.getEmail().length() > 45)  ||
+		        			(user.getImie().length() > 45)	||
+		        			(user.getNazwisko().length() > 45)  ||
+		        			(user.getTel().length() > 45) 
+		        	)
+	        	 {
+	        		 error += "Dlugosc nie moze byc wieksza niz 45 znakow!<br />";
+	        	 }
 	        	 if(error == ""){
 	        		model.addAttribute("error", "Uzytkownik zostal dodany! mozesz sie zalogowac!");
 	        		user.setRola("ROLE_USER");
@@ -249,7 +262,6 @@ public class HomeController   {
 	        		error += "wypelnij wszystkie pola!\n";
 	        		return "changePassword";
 	        	}  
-	        			
 	        	if(
 	        			(validor.validatePassword(request.getParameter("haslo1")) != true) ||
 	        			(validor.validatePassword(request.getParameter("haslo2")) != true)
@@ -263,6 +275,7 @@ public class HomeController   {
 	        	{
 	        		error += "Hasla musza sie zgadzac!\n";
 	     		}
+	        	System.out.println(request.getParameter("haslo"));
 	        	 if(encoder.matches(request.getParameter("haslo"), uzytkownik.getHaslo()))
 	        	{
 	        		 error += "Niepoprawne stare haslo!<br />";

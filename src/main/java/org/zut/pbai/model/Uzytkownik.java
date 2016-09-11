@@ -27,7 +27,7 @@ public class Uzytkownik implements java.io.Serializable {
 	private String imie;
 	private String nazwisko;
 	private String email;
-	private Integer tel;
+	private String tel;
 	private String pesel;
 	private String rola;
 	private Set<Bilet> bilets = new HashSet<Bilet>(0);
@@ -35,7 +35,7 @@ public class Uzytkownik implements java.io.Serializable {
 	public Uzytkownik() {
 	}
 
-	public Uzytkownik(String haslo, String imie, String nazwisko, String email, Integer tel, String pesel, String rola,
+	public Uzytkownik(String haslo, String imie, String nazwisko, String email, String tel, String pesel, String rola,
 			Set<Bilet> bilets) {
 		this.haslo = haslo;
 		this.imie = imie;
@@ -96,11 +96,11 @@ public class Uzytkownik implements java.io.Serializable {
 	}
 
 	@Column(name = "tel")
-	public Integer getTel() {
+	public String getTel() {
 		return this.tel;
 	}
 
-	public void setTel(Integer tel) {
+	public void setTel(String tel) {
 		this.tel = tel;
 	}
 

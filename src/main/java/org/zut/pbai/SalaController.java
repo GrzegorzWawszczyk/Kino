@@ -34,7 +34,7 @@ public class SalaController {
 	@RequestMapping(value = "/admin/addSala", method = RequestMethod.POST)
     public ModelAndView addFilm(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("sala")Sala sala) {
 
-        ModelAndView model = new ModelAndView("redirect://");
+        ModelAndView model = new ModelAndView("redirect:/");
 
     	sala.setIloscMiejsc(sala.getLiczbaRzedow() * sala.getLiczbaKolumn());
         salaDAO.addSala(sala);

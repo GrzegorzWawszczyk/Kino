@@ -8,7 +8,7 @@
 	<title>Home</title>
 <link rel="stylesheet" type="text/css"
 	href="style.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
 </head>
 <c:set var="height" scope="session" value="${(rows*35)+50}"/>
 <c:set var="weight" scope="session" value="${(cols*35)+50}"/>
