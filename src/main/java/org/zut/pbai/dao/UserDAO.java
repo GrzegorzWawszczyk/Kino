@@ -15,5 +15,4 @@ public interface UserDAO {
     public void update(Uzytkownik user);
     public List<Uzytkownik> listOfUsers();    
     public void insert(Uzytkownik user);
-    public void update(Uzytkownik user);
 }

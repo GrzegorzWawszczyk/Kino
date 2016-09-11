@@ -14,7 +14,7 @@
  <jsp:include page="../navtab.jsp"></jsp:include>
 
 
- <c:url value="/addFilm" var="theAction"/>
+ <c:url value="/admin/addFilm" var="theAction"/>
   <form:form method="POST" commandName="film" action="${theAction}" >
     <table>
     <c:if test="${!empty film.tytul}">

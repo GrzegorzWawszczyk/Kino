@@ -16,23 +16,21 @@
     <thead>
     <tr>
         <th>Tytul</th>
-        <th> Seans</th>
-        <th>Uzytkownik</th>
-        <th>Miejsce</th>
-        <th>Stan</th>
-        <th>Usun</th>
-        <th>Edytuj</th>
+ +        <th>Data</th>
+ +        <th>Stan</th>
+ 			<th>miejsce</th>
+ 			<th>e-mail</th>
+ +        <th>Edytuj</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${biletList}" var="bilet">
         <tr>
             <td>${bilet.film.tytul}</td>
-            <td>${bilet.seans}</td>
-            <td>${bilet.uzytkownik.email}</td>
-            <td>${bilet.miejsce}</td>
+            <td>${bilet.seans.data}</td>
             <td>${bilet.stan}</td>
-            <td><a href="<c:url value='/admin/removeBilet/${bilet.idbilet}' />" >Usun</a></td>
+            <td>${bilet.miejsce}</td>
+            <td>${bilet.uzytkownik.email}</td>          
             <td><a href="<c:url value='/admin/editTicket/${bilet.idbilet}' />" >Zmien</a></td>
         </tr>
     </c:forEach>

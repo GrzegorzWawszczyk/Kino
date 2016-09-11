@@ -14,7 +14,7 @@
  <jsp:include page="navtab.jsp"></jsp:include>
 
 
- <c:url value="/cardPayment" var="theAction"/>
+ <c:url value="/cardPaymentCommand" var="theAction"/>
   <!--<form:form method="POST" commandName="bilet" action="${theAction}" >-->
   <form method="POST" action="${theAction}">
     <table>

@@ -16,11 +16,10 @@
         </div>
         <ul class="nav navbar-nav">
 <li class="active"><a href="<c:url value="/home" />">Home</a></li>            <li><a href="<c:url value="/listFilmView" />">Filmy</a></li>
-            <!--<li class="dropdown">
-                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Filmy                    <span class="caret"></span></a>
+            	<li class="dropdown">
                 <ul class="dropdown-menu">
                     <li><a href="<c:url value="/listFilmView" />" >Lista filmow</a></li>
- <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>                    <li><a href="#">Page 1-3</a></li>
+ <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>                    
                 </ul>
             </li>
             <li class="dropdown">
@@ -30,7 +29,7 @@
                     <li><a href="<c:url value="/myBilets" />" >Moje bilety</a></li>
                     <li><a href="<c:url value="/changePassword" />" >Zmien haslo</a></li>
                 </ul>
-            </li>-->
+            </li>
             <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Administracja
@@ -38,10 +37,9 @@
                     <ul class="dropdown-menu">
                     	<li><a href="<c:url value="/admin/addFilmView" />" >Dodaj film</a></li>
                     	<li><a href="<c:url value="/admin/addSeansView" />" >Dodaj seans</a></li>
-                    	<li><a href="<c:url value="/admin/addSalaView" />" >Dodaj salę</a></li>
-                    	<li><a href="<c:url value="/admin/allTicketsView" />" >Lista użytkowników</a></li>
+                    	<li><a href="<c:url value="/admin/addSalaView" />" >Dodaj sala</a></li>
+                    	<li><a href="<c:url value="/admin/allUsersView" />" >Lista uzytkownikow</a></li>
                         <li><a href="<c:url value="/admin/allTicketsView" />" >Lista biletow</a></li>
-                        <li><a href="<c:url value="/listSeansView" />" >Dodaj seans</a></li>
                     </ul>
                 </li>
             </c:if>

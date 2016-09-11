@@ -67,7 +67,7 @@ public class FilmController {
     public ModelAndView addFilm(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("film")Film film) {
 
         film.getIdfilm();
-        ModelAndView model = new ModelAndView("redirect://admin/listFilmView");
+        ModelAndView model = new ModelAndView("redirect:/listFilmView");
 
         if(film.getIdfilm() == null){
             //new film, add it

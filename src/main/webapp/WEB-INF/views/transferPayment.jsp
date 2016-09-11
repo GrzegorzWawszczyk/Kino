@@ -21,7 +21,7 @@
  
  <span style="font-weight:bold">Numer konta: </span><c:out value="${accountNumber}"/><br>
  <span style="font-weight:bold">Tytuł: </span>Płatność za bilet <c:out value="${bilet.idbilet}"/><br>
- <span style="font-weight:bold">Kwota: </span><c:out value="${bilet.cena}"/> PLN<br>
+ <span style="font-weight:bold">Kwota: 20 PLN<br>
  <a class="button" href="${theAction}">OK</a>
  
 

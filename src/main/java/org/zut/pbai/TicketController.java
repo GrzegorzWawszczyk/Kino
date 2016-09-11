@@ -293,7 +293,16 @@ catch(Exception ex)
 
 	Validator validor = new Validator();
 	
-	@RequestMapping(value = "/cardPayment", method = RequestMethod.POST)
+	/*@RequestMapping(value = { "/cardPayment/{id}" }, method = RequestMethod.GET)
+	public ModelAndView  cardPayment(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		Bilet bilet = biletDAO.getBiletById(id);
+        ModelAndView model = new ModelAndView("cardPayment");
+        model.addObject("bilet", bilet);
+		return model;
+	}*/
+	
+	@RequestMapping(value = "/cardPaymentCommand", method = RequestMethod.POST)
 	public ModelAndView carsPaymentPost(@RequestParam("id")String idString, @RequestParam("cardNumber") String cardNumber, @RequestParam("CVV") String CVV){
 	
 		Validator validate = new Validator();
@@ -306,12 +315,20 @@ catch(Exception ex)
 			ModelAndView model = new ModelAndView("/cardPayment");
 			model.addObject("error", "B³êdne dane karty!");
 			model.addObject("bilet", bilet);
+			
 			return model;			
 		}
+		try
+    	{	
+            pdfCreator.createPdfWithBilet(bilet,bilet.getUzytkownik());
+            bilet.setStan("kupiony");
+            biletDAO.updateBilet(bilet);
+    	}
+        catch(Exception ex)
+        {
+        	System.out.println(ex.getMessage());
+        }
 		
-		bilet.setStan("kupiony");
-		biletDAO.updateBilet(bilet);
-		
-		return new ModelAndView("redirect:/"); //ZMIENIÆ NA REDIRECT DO KUPIONEGO BILETU
+		return new ModelAndView("redirect:/myBilets"); //ZMIENIÆ NA REDIRECT DO KUPIONEGO BILETU
 	}
 }

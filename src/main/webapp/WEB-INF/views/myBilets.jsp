@@ -32,7 +32,11 @@
             <td>${bilet.miejsce}</td>
              <c:if test="${bilet.stan == 'zarezerwowany'}">
             <td><a href="<c:url value='/changeStanBilet/${bilet.idbilet}' />" >Anuluj</a></td>
-            <td><a href="<c:url value='/payment' />" >Kup</a></td>
+            <td>
+            <a href="<c:url value='/transferPayment/${bilet.idbilet}' />" >Przelew</a>
+            /
+            <a href="<c:url value='/cardPayment/${bilet.idbilet}' />" >Karta</a>
+            </td>
             </c:if>
              <c:if test="${bilet.stan == 'kupiony'}">
             <td><a href="<c:url value='/changeStanBilet/${bilet.idbilet}' />" >Anuluj</a></td>

@@ -294,7 +294,7 @@ public class HomeController   {
 	@RequestMapping(value = { "/admin/promote/{id}" }, method = RequestMethod.GET)
 	public ModelAndView  promote(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 		
-		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		ModelAndView model = new ModelAndView("redirect:/admin/allUsersView");
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_ADMIN");
@@ -306,7 +306,7 @@ public class HomeController   {
 	@RequestMapping(value = { "/admin/degrade/{id}" }, method = RequestMethod.GET)
 	public ModelAndView  degrade(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 		
-		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		ModelAndView model = new ModelAndView("redirect:/admin/allUsersView");
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_USER");
