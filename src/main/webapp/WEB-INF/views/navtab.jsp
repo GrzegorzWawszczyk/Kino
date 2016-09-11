@@ -38,8 +38,8 @@
                     <ul class="dropdown-menu">
                     	<li><a href="<c:url value="/admin/addFilmView" />" >Dodaj film</a></li>
                     	<li><a href="<c:url value="/admin/addSeansView" />" >Dodaj seans</a></li>
-                    	<li><a href="<c:url value="/admin/addSalaView" />" >Dodaj salę</a></li>
-                    	<li><a href="<c:url value="/admin/allTicketsView" />" >Lista użytkowników</a></li>
+                    	<li><a href="<c:url value="/admin/addSalaView" />" >Dodaj sale</a></li>
+                    	<li><a href="<c:url value="/admin/allUsersView" />" >Lista uzytkowników</a></li>
                         <li><a href="<c:url value="/admin/allTicketsView" />" >Lista biletow</a></li>
                         <li><a href="<c:url value="/listSeansView" />" >Dodaj seans</a></li>
                     </ul>
