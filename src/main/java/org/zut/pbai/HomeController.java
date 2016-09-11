@@ -1,11 +1,13 @@
 package org.zut.pbai;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import com.itextpdf.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +26,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.UserDAO;
 import org.zut.pbai.helpers.MailMail;
+import org.zut.pbai.helpers.PDFCreator;
 import org.zut.pbai.helpers.Validator;
 import org.zut.pbai.helpers.LoginBean;
 import org.zut.pbai.model.Bilet;
 import org.zut.pbai.model.Uzytkownik;
 
 
-
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @SessionAttributes
-public class HomeController {
+public class HomeController   {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -54,11 +59,27 @@ public class HomeController {
 	@Autowired
 	MailMail mailMail;
 
-	@Autowired
-	FilmDAO filmDAO;
-	
+
+
 	@Autowired
 	org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder;
+	@Autowired
+	FilmDAO filmDAO;
+	@Autowired
+	ServletContext servletContext;
+/*	@Autowired
+	ServletContext servletContext;
+
+	public ServletConfig getServletConfig() {
+		return config;
+	}
+
+	@Autowired
+	private ServletConfig config;
+
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.config = servletConfig;
+	}*/
 	/**
 	 * Shows login page.
 	 */
@@ -190,7 +211,16 @@ public class HomeController {
 	        		model.addAttribute("error", "Uzytkownik zostal dodany! mozesz sie zalogowac!");
 	        		user.setRola("ROLE_USER");
 	        		userDAO.insert(user);
-	        		return "login";
+
+					String toAddr = "pbai2016zut@gmail.com";
+					String fromAddr = user.getEmail();
+					// email subject
+					String subject = "Witamy " + user.getImie() + " " + user.getNazwisko() + " na naszym serwisie";
+
+					// email body
+					String body = "Zyczymy udanego korzystania z naszego serwisu";
+					mailMail.sendMail(toAddr, fromAddr, subject, body);
+					return "login";
 	        	 }
 	        	
 	        	model.addAttribute("error", error);

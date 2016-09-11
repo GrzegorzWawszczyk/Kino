@@ -45,16 +45,18 @@ public class BiletDAOImpl implements  BiletDAO{
     public void updateBilet(Bilet bilet) {
 
         Session session = this.sessionFactory.getCurrentSession();
-        //System.out.println(bilet.getMiejsce());
-        if(this.listOfBiletsBySeansAndSeat(bilet.getSeans().getIdseans(), bilet.getMiejsce()) != null)
-        {
+        System.out.println("TEST: " + bilet.getMiejsce());
+       // if(this.listOfBiletsBySeansAndSeatAvaible(bilet.getSeans().getIdseans(), bilet.getMiejsce()) != null)
+       // {
+        	System.out.println("TEST2: " + bilet.getMiejsce());
         	if(Integer.parseInt(bilet.getMiejsce()) <= (bilet.getSeans().getSala().getLiczbaKolumn()
         			* bilet.getSeans().getSala().getLiczbaRzedow())
         	)
         	{
+        		System.out.println("TEST3: " + bilet.getMiejsce());
         		session.merge(bilet);
         	}
-        }
+      //  }
         
     }
     
