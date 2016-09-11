@@ -10,10 +10,12 @@
 	href="style.css" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
 </head>
+<c:set var="height" scope="session" value="${(rows*35)+50}"/>
+<c:set var="weight" scope="session" value="${(cols*35)+50}"/>
 <style type="text/css">
 	#holder{	
-	 height:200px;	 
-	 width:550px;
+	 height: ${height}px;	 
+	 width:${weight}px;
 	 background-color:#F5F5F5;
 	 border:1px solid #A4A4A4;
 	 margin-left:10px;	
@@ -145,12 +147,13 @@
 <jsp:include page="navtab.jsp"></jsp:include>
 
 
-	<h2> Wybierz miejsca klikajac na interesujace Cie miejsce:</h2>
+	<h2> Wybierz interesujące Cię miejsca klikając na nie:</h2>	
+   
     <div id="holder"> 
         <ul  id="place">
         </ul>    
     </div>
-    <div style="float:left;"> 
+     <div style="float:left;"> 
     <ul id="seatDescription">
         <li style="background-color: lightgreen;">Wolne</li>
         <li style="background-color: red;">Zajete</li>

@@ -6,4 +6,6 @@ import org.zut.pbai.model.Sala;
 import java.util.List;
 public interface SalaDAO {
 	public Sala getSalaById(int id);
+	public void addSala(Sala sala);
+    public List<Sala> listOfSalas();
 }

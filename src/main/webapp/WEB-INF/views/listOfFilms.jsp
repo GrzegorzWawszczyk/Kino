@@ -16,32 +16,37 @@
 
 <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
 
-    <a href="<c:url value="/addFilmView" />" >Dodac film</a>
+    <a class="button" style="height:30px" href="<c:url value="/addFilmView" />" >Dodaj film</a>
 </c:if>
 
 
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Tytul</th>
-          <th>Oryginalna nazwa</th>
-           <th>Edycja</th>
-           <th>Usuwanie</th>
-           <th>Szczegoły</th>
-           <th>Akcja</th>
-        </tr>
+			<th>Tytuł</th>
+			<th>Oryginalny tytuł</th>
+			<th>Premiera</th>
+			<th>Szczegóły</th>
+			<th>Seanse</th>
+			<c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
+			<th>Edycja</th>
+			<th>Usuwanie</th>
+			</c:if>
+
+			</tr>
       </thead>
       <tbody>
         <c:forEach items="${filmList}" var="film">
             <tr>
-                <td>${film.idfilm}</td>
                 <td>${film.tytul}</td>
                 <td>${film.tytulOryginal}</td>
-                <td><a href="<c:url value='/editFilm/${film.idfilm}' />" >Edit</a></td>
-                <td><a href="<c:url value='/removeFilm/${film.idfilm}' />" >Delete</a></td>
-                <td><a href="<c:url value='/detailsFilm/${film.idfilm}' />" >Details</a></td>
-                <td><a href="<c:url value='/buyTicketFilm/${film.idfilm}' />" >Kupic bilet</a></td>
+                <td>${film.premiera}</td>
+                <td><a href="<c:url value='/detailsFilm/${film.idfilm}' />" >Szczegóły</a></td>
+                <td><a href="<c:url value='/filmSeansList/${film.idfilm}' />" >Seanse</a></td>
+                <c:if test="${pageContext.request.isUserInRole(\"ROLE_ADMIN\")}">
+                <td><a href="<c:url value='/editFilm/${film.idfilm}' />" >Edytuj</a></td>
+                <td><a href="<c:url value='/removeFilm/${film.idfilm}' />" >Usuń</a></td>
+                </c:if>
             </tr>
         </c:forEach>
       </tbody>

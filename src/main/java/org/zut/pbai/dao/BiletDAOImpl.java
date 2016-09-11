@@ -49,7 +49,7 @@ public class BiletDAOImpl implements  BiletDAO{
         			* bilet.getSeans().getSala().getLiczbaRzedow())
         	)
         	{
-        		session.update(bilet);
+        		session.merge(bilet);
         	}
         }
     }

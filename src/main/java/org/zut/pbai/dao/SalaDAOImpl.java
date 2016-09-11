@@ -32,5 +32,17 @@ public class SalaDAOImpl implements SalaDAO{
         }
     }
 	
+	public void addSala(Sala sala)
+	{
+		Session session = this.sessionFactory.getCurrentSession();
+        session.save(sala);
+	}
+
+	public List<Sala> listOfSalas() {
+		Session session = this.sessionFactory.getCurrentSession();
+        List<Sala> salaList = session.createQuery("from Sala").list();
+        return salaList;
+	}
+	
 	
 }
