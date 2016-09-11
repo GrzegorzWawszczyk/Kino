@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -224,6 +226,7 @@ public class HomeController   {
 	        	 }
 	        	
 	        	model.addAttribute("error", error);
+	        	
 	        	return "signup";
 	  }
 	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.GET)
@@ -276,5 +279,40 @@ public class HomeController   {
 	        	return "changePassword";
 	}
 	
+	
+	
+	@RequestMapping(value = { "/admin/allUsersView" }, method = RequestMethod.GET)
+	public ModelAndView  allUsers(HttpServletRequest request, HttpServletResponse response) {
+
+        ModelAndView model = new ModelAndView("admin/allUsers");
+        
+        List<Uzytkownik> userList = userDAO.listOfUsers();
+        model.addObject("userList", userList);
+		return model;
+	}
+	
+	@RequestMapping(value = { "/admin/promote/{id}" }, method = RequestMethod.GET)
+	public ModelAndView  promote(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+		
+		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		
+		Uzytkownik user = userDAO.getUserById(id);
+		user.setRola("ROLE_ADMIN");
+		userDAO.update(user);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = { "/admin/degrade/{id}" }, method = RequestMethod.GET)
+	public ModelAndView  degrade(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+		
+		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		
+		Uzytkownik user = userDAO.getUserById(id);
+		user.setRola("ROLE_USER");
+		userDAO.update(user);
+		
+		return model;
+	}
 	
 }

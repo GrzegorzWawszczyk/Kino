@@ -1,5 +1,8 @@
 package org.zut.pbai.dao;
 
+import java.util.List;
+
+import org.zut.pbai.model.Seans;
 import org.zut.pbai.model.Uzytkownik;
 
 /**
@@ -8,6 +11,9 @@ import org.zut.pbai.model.Uzytkownik;
 public interface UserDAO {
     Uzytkownik findUserByEmailAndPassword(String email, String password);
     Uzytkownik findUserByEmail(String email);
+    public Uzytkownik getUserById(int id);
+    public void update(Uzytkownik user);
+    public List<Uzytkownik> listOfUsers();    
     public void insert(Uzytkownik user);
     public void update(Uzytkownik user);
 }

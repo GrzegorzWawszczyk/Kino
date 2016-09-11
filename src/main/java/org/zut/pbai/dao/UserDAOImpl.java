@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.zut.pbai.model.Film;
+import org.zut.pbai.model.Seans;
 import org.zut.pbai.model.Uzytkownik;
 
 import java.util.ArrayList;
@@ -75,8 +77,30 @@ public class UserDAOImpl implements  UserDAO {
     	}
         session.save(user);
     }
-    
-    public void update(Uzytkownik user)
+
+
+	@Override
+	public List<Uzytkownik> listOfUsers() {
+		Session session = this.sessionFactory.getCurrentSession();
+        List<Uzytkownik> userList = session.createQuery("from Uzytkownik").list();
+        return userList;
+	}
+
+
+	@Override
+	public Uzytkownik getUserById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Uzytkownik user = (Uzytkownik) session.get(Uzytkownik.class, new Integer(id));
+
+        if(null != user)
+        {
+            return user;
+        }
+        else
+        {
+            return null;
+        }
+	}    public void update(Uzytkownik user)
     {
     	Session session = this.sessionFactory.getCurrentSession();
     	if(user != null)
@@ -87,5 +111,4 @@ public class UserDAOImpl implements  UserDAO {
     		System.out.println(user.getHaslo());
     	}
        
-    }
-}
+    }}

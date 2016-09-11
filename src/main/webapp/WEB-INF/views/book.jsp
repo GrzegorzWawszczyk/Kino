@@ -147,12 +147,13 @@
 <jsp:include page="navtab.jsp"></jsp:include>
 
 
-	<h2> Wybierz miejsca klikajac na interesujace Cie miejsce:</h2>
+	<h2> Wybierz interesujące Cię miejsca klikając na nie:</h2>	
+   
     <div id="holder"> 
         <ul  id="place">
         </ul>    
     </div>
-    <div style="float:left;"> 
+     <div style="float:left;"> 
     <ul id="seatDescription">
         <li style="background-color: lightgreen;">Wolne</li>
         <li style="background-color: red;">Zajete</li>

@@ -52,10 +52,8 @@ public class BiletDAOImpl implements  BiletDAO{
         	if(Integer.parseInt(bilet.getMiejsce()) <= (bilet.getSeans().getSala().getLiczbaKolumn()
         			* bilet.getSeans().getSala().getLiczbaRzedow())
         	)
-        	{
-        		System.out.println("TEST3: " + bilet.getMiejsce());
-        		session.merge(bilet);
-        	}
+        	{        		session.merge(bilet);        
+	}
       //	  }
         
     }

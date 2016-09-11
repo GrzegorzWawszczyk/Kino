@@ -9,6 +9,9 @@ import org.zut.pbai.model.Seans;
  */
 public interface SeansDAO {
 
+	public void addSeans(Seans seans);
+	public void updateSeans(Seans seans);
     public Seans getsSeansById(int id);
     public List<Seans> listOfSeanse();
+    public List<Seans> listOfSeansesByFilm(int idFilm);
 }
