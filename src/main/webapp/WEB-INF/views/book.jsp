@@ -147,7 +147,7 @@
 <jsp:include page="navtab.jsp"></jsp:include>
 
 
-	<h2> Wybierz interesujące Cię miejsca klikając na nie:</h2>	
+	<h2> Wybierz interesujace Cie miejsca:</h2>	
    
     <div id="holder"> 
         <ul  id="place">

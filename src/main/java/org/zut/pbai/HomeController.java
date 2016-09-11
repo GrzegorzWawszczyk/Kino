@@ -263,7 +263,7 @@ public class HomeController   {
 	        	{
 	        		error += "Hasla musza sie zgadzac!\n";
 	     		}
-	        	 if(encoder.matches(request.getParameter("haslo"), uzytkownik.getHaslo()))
+	        	 if(!encoder.matches(request.getParameter("haslo"), uzytkownik.getHaslo()))
 	        	{
 	        		 error += "Niepoprawne stare haslo!<br />";
 	     		}
@@ -271,7 +271,7 @@ public class HomeController   {
 	        	 if(error == ""){
 	        		model.addAttribute("error", "Haslo zostalo zmienione!");
 	        		uzytkownik.setHaslo(request.getParameter("haslo1"));
-	        		userDAO.update(uzytkownik);
+	        		userDAO.update(uzytkownik, true);
 	        		return "changePassword";
 	        	 }
 	        	
@@ -298,7 +298,7 @@ public class HomeController   {
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_ADMIN");
-		userDAO.update(user);
+		userDAO.update(user, false);
 		
 		return model;
 	}
@@ -310,7 +310,7 @@ public class HomeController   {
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_USER");
-		userDAO.update(user);
+		userDAO.update(user, false);
 		
 		return model;
 	}

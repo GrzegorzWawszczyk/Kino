@@ -20,3 +20,20 @@ a.button:visited
 {
 	color:black;
 }
+span.label{
+	font-weight:bold;
+	font-size:23px;
+	color:black;
+}
+
+span.info{
+	font-size:20px
+}
+
+td.thinCol{
+	width:25%
+}
+
+td.wideCol{
+	width:50%
+}
