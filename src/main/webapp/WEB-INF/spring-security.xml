@@ -6,15 +6,17 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<!-- enable use-expressions -->
-	<http auto-config="true" use-expressions="true">
+	<http auto-config="true" use-expressions="true" >
 
 		<headers>
 			<cache-control />
 		</headers>
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/signup**" access="isAnonymous()" />
-		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')" />
+		<!-- <intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"/> !-->
+		<intercept-url pattern="/signup" access="isAnonymous()" />
 		<intercept-url pattern="/login" access="isAnonymous()"/>
+		<intercept-url pattern="/" access="permitAll"/>
+		
 		<form-login login-page="/login" 
 		    default-target-url="/home"
 			authentication-failure-url="/login?error"
@@ -33,7 +35,7 @@
 		<authentication-provider>
 		    <password-encoder ref="encoder" />
 			<jdbc-user-service data-source-ref="dataSource"
-				users-by-username-query="select email, haslo, tel from uzytkownik where email=?"
+				users-by-username-query="select email, haslo, enabled from uzytkownik where email=?"
 				authorities-by-username-query="select email, rola from uzytkownik where email=?" />
 		</authentication-provider>
 		

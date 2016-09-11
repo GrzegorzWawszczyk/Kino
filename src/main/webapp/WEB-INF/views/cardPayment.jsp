@@ -34,7 +34,7 @@
         
 
         <tr>
-        				<td><input type="submit" value="<spring:message text="Zapłać"/>" /></td>
+        				<td><input type="submit" value="<spring:message text="Zaplac�"/>" /></td>
         				<td><span style="color:red"> <c:out value="${error}"/> </span></td>
         </tr>
     </table>

@@ -30,13 +30,14 @@ public class Uzytkownik implements java.io.Serializable {
 	private String tel;
 	private String pesel;
 	private String rola;
+	private Integer enabled;
 	private Set<Bilet> bilets = new HashSet<Bilet>(0);
 
 	public Uzytkownik() {
 	}
 
 	public Uzytkownik(String haslo, String imie, String nazwisko, String email, String tel, String pesel, String rola,
-			Set<Bilet> bilets) {
+			Set<Bilet> bilets, Integer enabled) {
 		this.haslo = haslo;
 		this.imie = imie;
 		this.nazwisko = nazwisko;
@@ -45,6 +46,7 @@ public class Uzytkownik implements java.io.Serializable {
 		this.pesel = pesel;
 		this.rola = rola;
 		this.bilets = bilets;
+		this.enabled = enabled;
 	}
 
 	@Id
@@ -68,6 +70,15 @@ public class Uzytkownik implements java.io.Serializable {
 		this.haslo = haslo;
 	}
 
+	@Column(name = "enabled")
+	public Integer getEnabled() {
+		return this.enabled;
+	}
+
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
+	}
+	
 	@Column(name = "imie", length = 45)
 	public String getImie() {
 		return this.imie;

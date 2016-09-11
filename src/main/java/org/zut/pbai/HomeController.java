@@ -87,6 +87,7 @@ public class HomeController   {
 	 */
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView  start(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("my.key3: "+System.getProperty("javax.net.ssl.keyStore"));
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object user = (auth != null) ? auth.getPrincipal() :  null;
@@ -109,6 +110,14 @@ public class HomeController   {
 	@RequestMapping(value = { "/home**" }, method = RequestMethod.GET)
 	public ModelAndView  home(HttpServletRequest request, HttpServletResponse response) {
 
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("home");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -224,6 +233,7 @@ public class HomeController   {
 	        	 }
 	        	 if(error == ""){
 	        		model.addAttribute("error", "Uzytkownik zostal dodany! mozesz sie zalogowac!");
+	        		user.setEnabled(1);
 	        		user.setRola("ROLE_USER");
 	        		userDAO.insert(user);
 
@@ -244,7 +254,14 @@ public class HomeController   {
 	  }
 	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.GET)
 	public ModelAndView  changePassword(HttpServletRequest request, HttpServletResponse response) {
-
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("changePassword");
 		return model;
 	}
