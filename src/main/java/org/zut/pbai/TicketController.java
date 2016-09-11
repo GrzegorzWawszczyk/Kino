@@ -199,13 +199,13 @@ catch(Exception ex)
     	Bilet b = biletDAO.getBiletById(bilet.getIdbilet());
     	b.setStan(((String)request.getParameter("typ")));
     	bilet = b;
-        ModelAndView model = new ModelAndView("redirect://admin/allTicketsView");
+        ModelAndView model = new ModelAndView("redirect:/admin/allTicketsView");
        
         if(bilet.getStan().equals("kupiony")) {
         	try
         	{	
                 pdfCreator.createPdfWithBilet(bilet,bilet.getUzytkownik());
-                biletDAO.updateBilet(bilet);
+                
         	}
 	        catch(Exception ex)
 	        {
@@ -213,6 +213,7 @@ catch(Exception ex)
 	        }
         	System.out.println(bilet.getMiejsce() + " " + bilet.getUzytkownik().getEmail());
         }
+        biletDAO.updateBilet(bilet);
         System.out.println("TYP: " +b.getTyp());
         return model;
     }
@@ -232,7 +233,7 @@ catch(Exception ex)
     public ModelAndView changeStanTicket(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
 
-        ModelAndView model = new ModelAndView("redirect://myBilets");
+        ModelAndView model = new ModelAndView("redirect:/myBilets");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
 

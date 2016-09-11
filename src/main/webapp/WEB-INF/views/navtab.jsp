@@ -19,7 +19,7 @@
             	<li class="dropdown">
                 <ul class="dropdown-menu">
                     <li><a href="<c:url value="/listFilmView" />" >Lista filmow</a></li>
- <li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>                    
+ 			<li><a href="<c:url value="/listSeansView" />" >Lista seansow</a></li>                    	
                 </ul>
             </li>
             <li class="dropdown">

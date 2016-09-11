@@ -13,8 +13,8 @@
 
  <jsp:include page="../navtab.jsp"></jsp:include>
 
-
-<form:form name="login" method="POST" modelAttribute="bilet" action="../editTicketCommand/" >
+ <c:url value="/admin/editTicketCommand" var="theAction"/>
+<form:form name="login" method="POST" modelAttribute="bilet" action="${theAction}" >
         <table>
         <tr>
             <td><form:label path="idbilet">ID Bilet:</form:label></td>
