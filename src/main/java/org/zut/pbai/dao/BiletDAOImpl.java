@@ -56,7 +56,7 @@ public class BiletDAOImpl implements  BiletDAO{
         		System.out.println("TEST3: " + bilet.getMiejsce());
         		session.merge(bilet);
         	}
-      //  }
+      //	  }
         
     }
     

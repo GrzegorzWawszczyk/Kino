@@ -134,11 +134,15 @@ public class PDFCreator{
         document.addCreator("pbai2016");
 
         Paragraph paragraph = new Paragraph();
-        paragraph.add(new Chunk("Dzien dobry! " + uzytkownik.getImie() + uzytkownik.getNazwisko()));
-        paragraph.add(new Chunk("Zostal Kupiony bilet na film! " + bilet.getFilm().getTytul() ));
-        paragraph.add(new Chunk("Seans " + bilet.getSeans().getData() ));
-
-
+        paragraph.add(new Chunk("Dzien dobry " + uzytkownik.getImie() + " " + uzytkownik.getNazwisko() + "!"));
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(new Chunk("Zostal Kupiony bilet na film " + bilet.getFilm().getTytul()+"." ));
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(new Chunk("Data seansu " + bilet.getSeans().getData() ));
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(new Chunk("Miejsce " + bilet.getMiejsce()));
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(new Chunk("Dziekujemy za zakup biletu w naszym kinie!"));
         document.add(paragraph);
 
         document.close();
