@@ -82,11 +82,11 @@ public class FilmController {
     /**
      * editFilm action.
      */
-    @RequestMapping(value = "/editFilm/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/editFilm/{id}", method = RequestMethod.GET)
     public ModelAndView editFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
 
-        ModelAndView model = new ModelAndView("addFilm");
+        ModelAndView model = new ModelAndView("admin/addFilm");
         Film film = filmDAO.getFilmById(id);
         model.addObject("film", film);
         return model;
@@ -108,7 +108,7 @@ public class FilmController {
     /**
      * removeFilm action.
      */
-    @RequestMapping(value = "/removeFilm/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/removeFilm/{id}", method = RequestMethod.GET)
     public ModelAndView removeFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
         filmDAO.removeFilm(id);

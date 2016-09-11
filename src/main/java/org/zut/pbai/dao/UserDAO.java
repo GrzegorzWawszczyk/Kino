@@ -12,7 +12,7 @@ public interface UserDAO {
     Uzytkownik findUserByEmailAndPassword(String email, String password);
     Uzytkownik findUserByEmail(String email);
     public Uzytkownik getUserById(int id);
-    public void update(Uzytkownik user);
+    public void update(Uzytkownik user, boolean passwordChanged);
     public List<Uzytkownik> listOfUsers();    
     public void insert(Uzytkownik user);
 }

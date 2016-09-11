@@ -138,9 +138,11 @@ public class PDFCreator{
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(new Chunk("Zostal Kupiony bilet na film " + bilet.getFilm().getTytul()+"." ));
         paragraph.add(Chunk.NEWLINE);
-        paragraph.add(new Chunk("Data seansu " + bilet.getSeans().getData() ));
+        paragraph.add(new Chunk("Data seansu: " + bilet.getSeans().getData() ));
         paragraph.add(Chunk.NEWLINE);
-        paragraph.add(new Chunk("Miejsce " + bilet.getMiejsce()));
+        paragraph.add(new Chunk("Sala: " + bilet.getSeans().getSala().getNazwa() ));
+        paragraph.add(Chunk.NEWLINE);
+        paragraph.add(new Chunk("Miejsce: " + bilet.getMiejsce()));
         paragraph.add(Chunk.NEWLINE);
         paragraph.add(new Chunk("Dziekujemy za zakup biletu w naszym kinie!"));
         document.add(paragraph);

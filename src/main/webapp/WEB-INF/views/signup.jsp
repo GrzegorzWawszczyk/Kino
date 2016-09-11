@@ -3,36 +3,48 @@
 
 
 
-
+<h1>Rejestracja:</h1>
 <form name="login" method="POST"  action="${pageContext.request.contextPath}/reg" >
-                        <fieldset>
+                        <!-- <fieldset>-->
+                        <table>
+                        <tr>
                             <div class="form-group">
-                               Email: <input class="form-control" placeholder="E-mail" name="email" type="login" autofocus>
+                               <td>Email: </td><td><input class="form-control" placeholder="E-mail" name="email" type="login" autofocus></td>
                             </div>
+                            </tr><tr>
                             <div class="form-group">
-                              Powtorz Email: <input class="form-control" placeholder="E-mail" name="email2" type="login" autofocus>
+                              <td>Powtorz Email: </td><td><input class="form-control" placeholder="E-mail" name="email2" type="login" autofocus></td>
                             </div>
+                            </tr><tr>
                             <div class="form-group">
-                                Haslo: <input class="form-control" placeholder="Password" name="haslo" type="password" value="">
+                                <td>Haslo: </td><td><input class="form-control" placeholder="Password" name="haslo" type="password" value=""></td>
                             </div>
+                            </tr><tr>
                             <div class="form-group">
-                                Powtorz Haslo: <input class="form-control" placeholder="Password" name="haslo2" type="password" value="">
+                                <td>Powtorz Haslo:</td><td> <input class="form-control" placeholder="Password" name="haslo2" type="password" value=""></td>
                             </div>
+                            </tr><tr>
                              <div class="form-group">
-                                Imie: <input class="form-control" placeholder="Imie" name="imie" type="text" value="">
+                                <td>Imie: </td><td><input class="form-control" placeholder="Imie" name="imie" type="text" value=""></td>
                             </div>
+                            </tr><tr>
                              <div class="form-group">
-                                Nazwisko: <input class="form-control" placeholder="Nazwisko" name="nazwisko" type="text" value="">
+                                <td>Nazwisko: </td><td><input class="form-control" placeholder="Nazwisko" name="nazwisko" type="text" value=""></td>
                             </div>
+                            </tr><tr>
                              <div class="form-group">
-                                Telefon: <input class="form-control" placeholder="Telefon" name="tel" type="text" value="">
+                                <td>Telefon: </td><td><input class="form-control" placeholder="Telefon" name="tel" type="text" value=""></td>
                             </div>
+                            </tr><tr>
                              <div class="form-group">
-                                Pesel: <input class="form-control" placeholder="Pesel" name="pesel" type="text" value="">
+                                <td>Pesel: </td><td><input class="form-control" placeholder="Pesel" name="pesel" type="text" value=""></td>
                             </div>
+                            </tr><tr>
                             <div style="color: red">${error}</div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <!-- Change this to a button or input when using this as a form -->
-                            <button type="submit" class="btn btn-success btn-block">Login</button>
-                        </fieldset>
+                            <td></td><td><button type="submit" class="btn btn-success btn-block">Zarejestruj</button></td>
+                       </tr>
+                       </table>
+                       <!-- </fieldset>-->
 </form>

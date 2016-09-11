@@ -61,6 +61,7 @@ public class SeansController {
         List<Seans> seansList = seansDAO.listOfSeansesByFilm(id);
 
         model.addObject("seansList", seansList);
+        model.addObject("film",filmDAO.getFilmById(id).getTytul());
         return model;
     }
 
@@ -176,10 +177,10 @@ public class SeansController {
     @RequestMapping(value = "/admin/removeSeans/{id}", method = RequestMethod.GET)
     public ModelAndView removeFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
-        filmDAO.removeFilm(id);
-        ModelAndView model = new ModelAndView("listOfFilms");
-        List<Film> filmList = filmDAO.listOfFilms();
-        model.addObject("filmList", filmList);
+    	int filmID=seansDAO.getsSeansById(id).getFilm().getIdfilm();
+    	System.out.println(filmID);
+        seansDAO.remove(id);
+        ModelAndView model = new ModelAndView("redirect:/filmSeansList/"+filmID);
         return model;
     }
 

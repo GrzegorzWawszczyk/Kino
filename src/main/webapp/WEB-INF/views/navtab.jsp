@@ -12,10 +12,10 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">WebSiteName</a>
+            <a class="navbar-brand" href="<c:url value="/" />">MyCINEMA</a>
         </div>
         <ul class="nav navbar-nav">
-<li class="active"><a href="<c:url value="/home" />">Home</a></li>            <li><a href="<c:url value="/listFilmView" />">Filmy</a></li>
+<li class="active"><a href="<c:url value="/" />">Strona domowa</a></li>            <li><a href="<c:url value="/listFilmView" />">Filmy</a></li>
             	<li class="dropdown">
                 <ul class="dropdown-menu">
                     <li><a href="<c:url value="/listFilmView" />" >Lista filmow</a></li>
@@ -43,7 +43,7 @@
                     </ul>
                 </li>
             </c:if>
-            <li><a href="<c:url value="/logout" />" >Logout</a></li>
+            <li><a href="<c:url value="/logout" />" >Wyloguj</a></li>
         </ul>
     </div>
 </nav>
