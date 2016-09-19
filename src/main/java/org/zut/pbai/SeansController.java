@@ -1,6 +1,8 @@
 package org.zut.pbai;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +48,14 @@ public class SeansController {
      */
     @RequestMapping(value = "/listSeansView", method = RequestMethod.GET)
     public ModelAndView listSeansView(HttpServletRequest request, HttpServletResponse response) {
-
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("listSeans");
         List<Seans> seansList = seansDAO.listOfSeanse();
 
@@ -56,11 +65,19 @@ public class SeansController {
     
     @RequestMapping(value = "/filmSeansList/{id}", method = RequestMethod.GET)
     public ModelAndView listFilmSeansesView(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
-
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("listSeans");
         List<Seans> seansList = seansDAO.listOfSeansesByFilm(id);
 
         model.addObject("seansList", seansList);
+        model.addObject("film",filmDAO.getFilmById(id).getTytul());
         return model;
     }
 
@@ -163,7 +180,14 @@ public class SeansController {
     @RequestMapping(value = "/detailsSeans/{id}", method = RequestMethod.GET)
     public ModelAndView detailsFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
-
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("filmDetails");
         Film film = filmDAO.getFilmById(id);
         model.addObject("film", film);
@@ -176,10 +200,10 @@ public class SeansController {
     @RequestMapping(value = "/admin/removeSeans/{id}", method = RequestMethod.GET)
     public ModelAndView removeFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
-        filmDAO.removeFilm(id);
-        ModelAndView model = new ModelAndView("listOfFilms");
-        List<Film> filmList = filmDAO.listOfFilms();
-        model.addObject("filmList", filmList);
+    	int filmID=seansDAO.getsSeansById(id).getFilm().getIdfilm();
+    	System.out.println(filmID);
+        seansDAO.remove(id);
+        ModelAndView model = new ModelAndView("redirect:/filmSeansList/"+filmID);
         return model;
     }
 

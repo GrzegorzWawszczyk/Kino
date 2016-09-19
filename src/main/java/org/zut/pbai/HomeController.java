@@ -1,5 +1,6 @@
 package org.zut.pbai;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.itextpdf.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +28,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.ServletConfigAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.UserDAO;
 import org.zut.pbai.helpers.MailMail;
+import org.zut.pbai.helpers.PDFCreator;
 import org.zut.pbai.helpers.Validator;
 import org.zut.pbai.helpers.LoginBean;
 import org.zut.pbai.model.Bilet;
 import org.zut.pbai.model.Uzytkownik;
 
 
-
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @SessionAttributes
-public class HomeController {
+public class HomeController   {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -56,13 +61,33 @@ public class HomeController {
 	@Autowired
 	MailMail mailMail;
 
+
+
+	@Autowired
+	org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder encoder;
 	@Autowired
 	FilmDAO filmDAO;
+	@Autowired
+	ServletContext servletContext;
+/*	@Autowired
+	ServletContext servletContext;
+
+	public ServletConfig getServletConfig() {
+		return config;
+	}
+
+	@Autowired
+	private ServletConfig config;
+
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.config = servletConfig;
+	}*/
 	/**
 	 * Shows login page.
 	 */
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView  start(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("my.key3: "+System.getProperty("javax.net.ssl.keyStore"));
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Object user = (auth != null) ? auth.getPrincipal() :  null;
@@ -85,6 +110,14 @@ public class HomeController {
 	@RequestMapping(value = { "/home**" }, method = RequestMethod.GET)
 	public ModelAndView  home(HttpServletRequest request, HttpServletResponse response) {
 
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
         ModelAndView model = new ModelAndView("home");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -150,18 +183,19 @@ public class HomeController {
 		   ModelMap model, HttpServletRequest request) 
 	{       	
 		String error = "";
-		Validator validor = new Validator();
+		
 	        	if( (user.getHaslo() == null) || (user.getHaslo().equals("")) || 
 	        			(user.getEmail() == null) ||(user.getEmail().equals("")) ||
 	        			(user.getImie() == null) ||(user.getImie().equals("")) ||	
 	        			(user.getNazwisko() == null) ||(user.getNazwisko().equals("")) ||
 	        			(user.getPesel() == null) ||(user.getPesel().equals("")) ||
-	        			(user.getTel() == null) ||	(user.getTel().toString().equals(""))
+	        			(user.getTel() == null) ||	(user.getTel().equals(""))
 	        	)
 	        	{
 	        		error += "wypelnij wszystkie pola!\n";
 	        	
 	        	}  
+	        	Validator validor = new Validator(user.getPesel());
 	        	if(userDAO.findUserByEmail(user.getEmail()) != null) 
 	        	{
 	        		error += "juz jest taki uzytkownik!\n";
@@ -184,18 +218,96 @@ public class HomeController {
 	        	{
 	        		 error += "Adresy email musza sie zgadzac!<br />";
 	     		}
-	        		 
+	        	 if(!validor.isValid())
+	        	 {
+	        		 error += "Prosze podac prawidlowy pesel!<br />";
+	        	 }
+	        	 if(  
+		        			(user.getEmail().length() > 45)  ||
+		        			(user.getImie().length() > 45)	||
+		        			(user.getNazwisko().length() > 45)  ||
+		        			(user.getTel().length() > 45) 
+		        	)
+	        	 {
+	        		 error += "Dlugosc nie moze byc wieksza niz 45 znakow!<br />";
+	        	 }
 	        	 if(error == ""){
 	        		model.addAttribute("error", "Uzytkownik zostal dodany! mozesz sie zalogowac!");
+	        		user.setEnabled(1);
 	        		user.setRola("ROLE_USER");
 	        		userDAO.insert(user);
-	        		return "login";
+
+					String toAddr = "pbai2016zut@gmail.com";
+					String fromAddr = user.getEmail();
+					// email subject
+					String subject = "Witamy " + user.getImie() + " " + user.getNazwisko() + " na naszym serwisie";
+
+					// email body
+					String body = "Zyczymy udanego korzystania z naszego serwisu";
+					mailMail.sendMail(toAddr, fromAddr, subject, body);
+					return "login";
 	        	 }
 	        	
 	        	model.addAttribute("error", error);
 	        	
 	        	return "signup";
 	  }
+	@RequestMapping(value = { "/changePassword" }, method = RequestMethod.GET)
+	public ModelAndView  changePassword(HttpServletRequest request, HttpServletResponse response) {
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
+        ModelAndView model = new ModelAndView("changePassword");
+		return model;
+	}
+	@RequestMapping(value = { "/changePasswordCommand" }, method = RequestMethod.POST)
+	public String  changePasswordCommand(HttpServletRequest request, ModelMap model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
+        String error = "";
+		Validator validor = new Validator();
+	        	if( (request.getParameter("haslo")== null) || 
+	        		(request.getParameter("haslo1")== null) || 
+	        		(request.getParameter("haslo2")== null)
+	        	)
+	        	{
+	        		error += "wypelnij wszystkie pola!\n";
+	        		return "changePassword";
+	        	}  
+	        	if(
+	        			(validor.validatePassword(request.getParameter("haslo1")) != true) ||
+	        			(validor.validatePassword(request.getParameter("haslo2")) != true)
+	        	)
+	        	{
+	        		 error += "Haslo musi posiadac:"
+	        				+ " Wielka litere, mala litere, cyfre"
+	        				+ " i znak specjalny(@#$%) oraz conajmniej 8 znakow\n";
+	        	}
+	        	if(!request.getParameter("haslo1").equals(request.getParameter("haslo2")))
+	        	{
+	        		error += "Hasla musza sie zgadzac!\n";
+	     		}
+	        	 if(!encoder.matches(request.getParameter("haslo"), uzytkownik.getHaslo()))
+	        	{
+	        		 error += "Niepoprawne stare haslo!<br />";
+	     		}
+	        		 
+	        	 if(error == ""){
+	        		model.addAttribute("error", "Haslo zostalo zmienione!");
+	        		uzytkownik.setHaslo(request.getParameter("haslo1"));
+	        		userDAO.update(uzytkownik, true);
+	        		return "changePassword";
+	        	 }
+	        	
+	        	model.addAttribute("error", error);
+	        	return "changePassword";
+	}
+	
 	
 	
 	@RequestMapping(value = { "/admin/allUsersView" }, method = RequestMethod.GET)
@@ -211,11 +323,11 @@ public class HomeController {
 	@RequestMapping(value = { "/admin/promote/{id}" }, method = RequestMethod.GET)
 	public ModelAndView  promote(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 		
-		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		ModelAndView model = new ModelAndView("redirect:/admin/allUsersView");
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_ADMIN");
-		userDAO.update(user);
+		userDAO.update(user, false);
 		
 		return model;
 	}
@@ -223,11 +335,11 @@ public class HomeController {
 	@RequestMapping(value = { "/admin/degrade/{id}" }, method = RequestMethod.GET)
 	public ModelAndView  degrade(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 		
-		ModelAndView model = new ModelAndView("redirect:/admin/addUsersView");
+		ModelAndView model = new ModelAndView("redirect:/admin/allUsersView");
 		
 		Uzytkownik user = userDAO.getUserById(id);
 		user.setRola("ROLE_USER");
-		userDAO.update(user);
+		userDAO.update(user, false);
 		
 		return model;
 	}

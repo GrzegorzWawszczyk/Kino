@@ -8,7 +8,7 @@
 	<title>Home</title>
 <link rel="stylesheet" type="text/css"
 	href="style.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js" type="text/javascript"></script>
 </head>
 <c:set var="height" scope="session" value="${(rows*35)+50}"/>
 <c:set var="weight" scope="session" value="${(cols*35)+50}"/>
@@ -147,7 +147,7 @@
 <jsp:include page="navtab.jsp"></jsp:include>
 
 
-	<h2> Wybierz interesujące Cię miejsca klikając na nie:</h2>	
+	<h2> Wybierz interesujace Cie miejsca:</h2>	
    
     <div id="holder"> 
         <ul  id="place">

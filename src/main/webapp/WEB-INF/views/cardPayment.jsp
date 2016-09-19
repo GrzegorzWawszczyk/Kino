@@ -14,7 +14,7 @@
  <jsp:include page="navtab.jsp"></jsp:include>
 
 
- <c:url value="/cardPayment" var="theAction"/>
+ <c:url value="/cardPaymentCommand" var="theAction"/>
   <!--<form:form method="POST" commandName="bilet" action="${theAction}" >-->
   <form method="POST" action="${theAction}">
     <table>
@@ -34,7 +34,7 @@
         
 
         <tr>
-        				<td><input type="submit" value="<spring:message text="Zapłać"/>" /></td>
+        				<td><input type="submit" value="<spring:message text="Zaplac�"/>" /></td>
         				<td><span style="color:red"> <c:out value="${error}"/> </span></td>
         </tr>
     </table>

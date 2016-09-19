@@ -100,11 +100,18 @@ public class UserDAOImpl implements  UserDAO {
         {
             return null;
         }
-	}
-
-@Override
-	public void update(Uzytkownik user) {
+	}    
+	public void update(Uzytkownik user, boolean passwordChanged)
+    {
     	Session session = this.sessionFactory.getCurrentSession();
-    	session.merge(user);
-	}
-}
+    	if(user != null)
+    	{
+    		if (passwordChanged)
+    		{
+	    		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+	    		user.setHaslo( passwordEncoder.encode(user.getHaslo()));
+    		}
+    		session.merge(user);
+    	}
+       
+    }}

@@ -1,8 +1,19 @@
 package org.zut.pbai;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Properties;
+
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,7 +30,9 @@ import org.zut.pbai.dao.FilmDAO;
 import org.zut.pbai.dao.SalaDAO;
 import org.zut.pbai.dao.SeansDAO;
 import org.zut.pbai.dao.UserDAO;
-import org.zut.pbai.helpers.Validator;
+import org.zut.pbai.helpers.LoginBean;
+import org.zut.pbai.helpers.MailMail;
+import org.zut.pbai.helpers.PDFCreator;import org.zut.pbai.helpers.Validator;
 import org.zut.pbai.model.Bilet;
 import org.zut.pbai.model.Film;
 import org.zut.pbai.model.Sala;
@@ -28,6 +41,17 @@ import org.zut.pbai.model.Uzytkownik;
 
 
 
+
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -52,12 +76,29 @@ public class TicketController {
     
     @Autowired
     SalaDAO salaDAO;
+
+    @Autowired
+    MailMail mailMail;
+
+    @Autowired
+    PDFCreator pdfCreator;
+
+    @Autowired
+    ServletContext servletContext;
     /**
      * editFilm action.
      */
     @RequestMapping(value = "/buyTicketFilm/{id}", method = RequestMethod.GET)
     public ModelAndView buyTicketFilm(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
 
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         ModelAndView model = new ModelAndView("redirect:/listFilmView");
         Film film = filmDAO.getFilmById(id);
@@ -73,13 +114,41 @@ public class TicketController {
         bilet.setCena("50");
         bilet.setStan("zarezerwowany");
         biletDAO.addBilet(bilet);
+
+
+        String toAddr = "pbai2016zut@gmail.com";
+        String fromAddr = "pbai2016zut@gmail.com";
+        // email subject
+        String subject1 = "Zostaï¿½ kupiony bilet na filWitamy " + uzytkownik.getImie() + uzytkownik.getNazwisko() + " na naszym serwisie";
+
+        // email body
+        String body = "Zyczymy udanego korzystania z naszego serwisu";
+try{
+        pdfCreator.createPdfWithBilet(bilet,uzytkownik);
+}
+catch(Exception ex)
+{
+	System.out.println(ex.getMessage());
+	}
+
+
         model.addObject("film", film);
         return model;
     }
+
+
     
     @RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
     public ModelAndView bookTicket(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id)
     {
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
     	Seans seans = seansDAO.getsSeansById(id);
@@ -93,13 +162,16 @@ public class TicketController {
 		for (Bilet b : list){
 			
 			if (flag == false){
-				booked += b.getMiejsce();
-				System.out.println("numer: "+ b.getMiejsce());
-				flag = true;
+				if(b.getStan().equals("kupiony") || b.getStan().equals("zarezerwowany")){
+					booked += b.getMiejsce();
+					System.out.println("numer: "+ b.getMiejsce());
+					flag = true;
+				}
 			}
 			else{
-				
-				booked += ", " +b.getMiejsce();
+				if(b.getStan().equals("kupiony") || b.getStan().equals("zarezerwowany")){
+					booked += ", " +b.getMiejsce();
+				}
 			}
 		}
 		System.out.println("booked: "+ booked);
@@ -130,12 +202,13 @@ public class TicketController {
 			b.setSeans(seansDAO.getsSeansById( Integer.parseInt(request.getParameter("seansid"))));
 			b.setFilm(b.getSeans().getFilm());
 			b.setMiejsce(l);
-			b.setStan("zarezerwowane");
+			b.setStan("zarezerwowany");
+			System.out.println(b.getMiejsce());
 			biletDAO.addBilet(b);
 			//biletDAO.addBilet;(new Book(0, book.getMsid(),Integer.parseInt(l),book.getUsername()));
 		}
 	    model.addAttribute("error","Zarezerwowano!");
-		return "redirect:/listFilmView";
+		return "redirect:/myBilets";
 	   }
     @RequestMapping(value = "/admin/editTicketCommand", method = RequestMethod.POST)
     public ModelAndView editTicketCommand(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("bilet")Bilet bilet) {
@@ -143,9 +216,22 @@ public class TicketController {
       //  bilet.getIdfilm();
     	
     	Bilet b = biletDAO.getBiletById(bilet.getIdbilet());
-    	b.setTyp(((String)request.getParameter("typ")));
+    	b.setStan(((String)request.getParameter("typ")));
     	bilet = b;
-        ModelAndView model = new ModelAndView("redirect://admin/allTicketsView");
+        ModelAndView model = new ModelAndView("redirect:/admin/allTicketsView");
+       
+        if(bilet.getStan().equals("kupiony")) {
+        	try
+        	{	
+                pdfCreator.createPdfWithBilet(bilet,bilet.getUzytkownik());
+                
+        	}
+	        catch(Exception ex)
+	        {
+	        	System.out.println(ex.getMessage());
+	        }
+        	System.out.println(bilet.getMiejsce() + " " + bilet.getUzytkownik().getEmail());
+        }
         biletDAO.updateBilet(bilet);
         System.out.println("TYP: " +b.getTyp());
         return model;
@@ -161,6 +247,31 @@ public class TicketController {
         return model;
     }
     
+    
+    @RequestMapping(value = "/changeStanBilet/{id}", method = RequestMethod.GET)
+    public ModelAndView changeStanTicket(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
+
+        ModelAndView model = new ModelAndView("redirect:/myBilets");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Uzytkownik uzytkownik = userDAO.findUserByEmail(auth.getName());
+
+        Bilet bilet = biletDAO.getBiletById(id);
+        if(bilet == null) return model;
+    	if(uzytkownik.getIdklient() != bilet.getUzytkownik().getIdklient()) return model;
+    	if(bilet.getStan().equals("zarezerwowany")) bilet.setStan("anulowany");
+    	if(bilet.getStan().equals("kupiony")) bilet.setStan("doZwrotu");
+    	biletDAO.updateBilet(bilet);
+        return model;
+    }
+    
     @RequestMapping(value = "/admin/allTicketsView", method = RequestMethod.GET)
     public ModelAndView listFilmView(HttpServletRequest request, HttpServletResponse response) {
 
@@ -172,8 +283,30 @@ public class TicketController {
         return model;
     }
     
+    @RequestMapping(value = { "/payment" }, method = RequestMethod.GET)
+	public ModelAndView  payment(HttpServletRequest request, HttpServletResponse response) {
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
+        ModelAndView model = new ModelAndView("payment");
+		return model;
+	}
+    
     @RequestMapping(value = "/cardPayment/{id}", method = RequestMethod.GET)
     public ModelAndView cardPaymentView(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
     	ModelAndView model = new ModelAndView("/cardPayment");
     	Bilet bilet = biletDAO.getBiletById(id);
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -187,6 +320,14 @@ public class TicketController {
     
     @RequestMapping(value = "/transferPayment/{id}", method = RequestMethod.GET)
     public ModelAndView transferPaymentView(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+    	if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
     	ModelAndView model = new ModelAndView("/transferPayment");
     	Bilet bilet = biletDAO.getBiletById(id);
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -194,7 +335,7 @@ public class TicketController {
     		return new ModelAndView("redirect:/");
     		
 		model.addObject("bilet", bilet);
-		model.addObject("accountNumber", "12345678909876543212345678"); //Fajnie by to by³o trzymac gdzieœ w bazie chyba
+		model.addObject("accountNumber", "12345678909876543212345678"); //Fajnie by to byï¿½o trzymac gdzieï¿½ w bazie chyba
     	
     	return model;
     }
@@ -202,9 +343,25 @@ public class TicketController {
 
 	Validator validor = new Validator();
 	
-	@RequestMapping(value = "/cardPayment", method = RequestMethod.POST)
-	public ModelAndView carsPaymentPost(@RequestParam("id")String idString, @RequestParam("cardNumber") String cardNumber, @RequestParam("CVV") String CVV){
+	/*@RequestMapping(value = { "/cardPayment/{id}" }, method = RequestMethod.GET)
+	public ModelAndView  cardPayment(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id) {
+
+		Bilet bilet = biletDAO.getBiletById(id);
+        ModelAndView model = new ModelAndView("cardPayment");
+        model.addObject("bilet", bilet);
+		return model;
+	}*/
 	
+	@RequestMapping(value = "/cardPaymentCommand", method = RequestMethod.POST)
+	public ModelAndView carsPaymentPost(@RequestParam("id")String idString, @RequestParam("cardNumber") String cardNumber, @RequestParam("CVV") String CVV){
+		if(SecurityContextHolder.getContext().getAuthentication()
+				instanceof AnonymousAuthenticationToken)
+		{
+			ModelAndView model = new ModelAndView("login");
+			LoginBean loginBean = new LoginBean();
+			model.addObject("loginBean", loginBean);
+			return model;
+		}
 		Validator validate = new Validator();
 		
 		int id=Integer.parseInt(idString);
@@ -213,14 +370,22 @@ public class TicketController {
 		if (!validate.validateCardNumber(cardNumber) || !validate.validateCVV(CVV))
 		{
 			ModelAndView model = new ModelAndView("/cardPayment");
-			model.addObject("error", "B³êdne dane karty!");
+			model.addObject("error", "Bï¿½ï¿½dne dane karty!");
 			model.addObject("bilet", bilet);
+			
 			return model;			
 		}
+		try
+    	{	
+            pdfCreator.createPdfWithBilet(bilet,bilet.getUzytkownik());
+            bilet.setStan("kupiony");
+            biletDAO.updateBilet(bilet);
+    	}
+        catch(Exception ex)
+        {
+        	System.out.println(ex.getMessage());
+        }
 		
-		bilet.setStan("kupiony");
-		biletDAO.updateBilet(bilet);
-		
-		return new ModelAndView("redirect:/"); //ZMIENIÆ NA REDIRECT DO KUPIONEGO BILETU
+		return new ModelAndView("redirect:/myBilets"); //ZMIENIï¿½ NA REDIRECT DO KUPIONEGO BILETU
 	}
 }

@@ -70,5 +70,15 @@ public class SeansDAOImpl implements SeansDAO{
         session.merge(seans);		
 	}
 
+	@Override
+	public void remove(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+        Seans seans = (Seans) session.load(Seans.class, new Integer(id));
+        if(null != seans){
+            session.delete(seans);
+        }
+		
+	}
+
 
 }

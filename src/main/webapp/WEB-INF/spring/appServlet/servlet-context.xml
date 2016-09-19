@@ -28,13 +28,13 @@
 
 	<context:component-scan base-package="org.zut.pbai" />
 		<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<beans:property name="url"
-			value="jdbc:mysql://pbai2016db.cj6jfrry5swq.eu-west-1.rds.amazonaws.com:3306/pbai2016db" />
-		<beans:property name="username" value="pbai2016db" />
-		<beans:property name="password" value="pbai2016db" />
-	</beans:bean>
+			destroy-method="close">
+			<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<beans:property name="url"
+				value="jdbc:mysql://pbai2016db.cj6jfrry5swq.eu-west-1.rds.amazonaws.com:3306/pbai2016db?verifyServerCertificate=false&amp;useSSL=true&amp;requireSSL=true" />
+			<beans:property name="username" value="pbai2016db" />
+			<beans:property name="password" value="pbai2016db" />
+		</beans:bean>
 
 
 	<!-- Hibernate 4 SessionFactory Bean definition -->

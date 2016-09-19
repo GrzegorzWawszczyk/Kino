@@ -14,14 +14,14 @@
  <jsp:include page="navtab.jsp"></jsp:include>
 
 
- <c:url value="/" var="theAction"/>
+ <c:url value="/myBilets" var="theAction"/>
  
  <h3>Wykonaj przelew o podanych parametrach:</h3>
- <h4>(Gdy zostanie zaksięgowany, Twój bilet zostanie potwierdzony)</h4>
+ <h4>(Gdy zostanie zaksiegowany, Twoj bilet zostanie potwierdzony)</h4>
  
  <span style="font-weight:bold">Numer konta: </span><c:out value="${accountNumber}"/><br>
- <span style="font-weight:bold">Tytuł: </span>Płatność za bilet <c:out value="${bilet.idbilet}"/><br>
- <span style="font-weight:bold">Kwota: </span><c:out value="${bilet.cena}"/> PLN<br>
+ <span style="font-weight:bold">Tytul�: </span>Platnosc za bilet <c:out value="${bilet.idbilet}"/><br>
+ <span style="font-weight:bold">Kwota: 20 PLN<br>
  <a class="button" href="${theAction}">OK</a>
  
 

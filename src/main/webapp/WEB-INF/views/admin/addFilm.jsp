@@ -14,79 +14,63 @@
  <jsp:include page="../navtab.jsp"></jsp:include>
 
 
- <c:url value="/addFilm" var="theAction"/>
+ <c:url value="/admin/addFilm" var="theAction"/>
   <form:form method="POST" commandName="film" action="${theAction}" >
     <table>
-    <c:if test="${!empty film.tytul}">
-    	<tr>
-    		<td>
-    			<form:label path="idfilm">
-    				<spring:message text="ID"/>
-    			</form:label>
-    		</td>
-    		<td>
-    			<form:input path="idfilm" readonly="true" size="8"  disabled="true" />
-    			<form:hidden path="idfilm" />
-    		</td>
-    	</tr>
-    	</c:if>
         <tr>
-            <td><form:label path="idfilm">ID film:</form:label></td>
-            <td><form:input path="idfilm" value="${film.idfilm}" readonly="true"/></td>
+            <td><form:hidden path="idfilm" value="${film.idfilm}" readonly="true"/></td>
         </tr>
         <tr>
-            <td><form:label path="tytul">tytul:</form:label></td>
+            <td><form:label path="tytul">Tytul:</form:label></td>
             <td><form:input path="tytul" value="${film.tytul}"/></td>
         </tr>
         <tr>
-            <td><form:label path="tytulOryginal">Employee Age:</form:label></td>
+            <td><form:label path="tytulOryginal">Tytul oryginalny:</form:label></td>
             <td><form:input path="tytulOryginal" value="${film.tytulOryginal}"/></td>
         </tr>
         <tr>
-            <td><form:label path="premiera">premiera:</form:label></td>
-            <td><form:input path="premiera" value="${film.premiera}"/></td>
+            <td><form:label path="premiera">Rok premiery:</form:label></td>
+            <td><form:input type="number" min="1900" path="premiera" value="${film.premiera}"/></td>
         </tr>
 
         <tr>
-            <td><form:label path="wiek">wiek:</form:label></td>
-            <td><form:input path="wiek" value="${film.wiek}"/></td>
-        </tr>
-
-        <tr>
-            <td><form:label path="czasTrwania">czasTrwania:</form:label></td>
-            <td><form:input path="czasTrwania" value="${film.czasTrwania}" /></td>
+            <td><form:label path="czasTrwania">Czas trwania(min.):</form:label></td>
+            <td><form:input type="number" path="czasTrwania" value="${film.czasTrwania}" /></td>
         </tr>
         <tr>
-            <td><form:label path="produkcja">produkcja:</form:label></td>
+            <td><form:label path="produkcja">Kraj produkcji:</form:label></td>
             <td><form:input path="produkcja" value="${film.produkcja}" /></td>
         </tr>
         <tr>
-            <td><form:label path="gatunek">gatunek:</form:label></td>
+            <td><form:label path="gatunek">Gatunek:</form:label></td>
             <td><form:input path="gatunek" value="${film.gatunek}"/></td>
         </tr>
         <tr>
-            <td><form:label path="wersja">wersja:</form:label></td>
-            <td><form:input path="wersja" value="${film.wersja}" /></td>
+            <td><form:label path="wersja">Wersja:</form:label></td>
+            <td> <form:select path="wersja" value="${film.wersja}" >
+            <form:option value="2D">2D</form:option>
+            <form:option value="3D">3D</form:option>
+            </form:select></td>
         </tr>
         <tr>
-            <td><form:label path="odLat">odLat:</form:label></td>
-            <td><form:input path="odLat" value="${film.odLat}"/></td>
+            <td><form:label path="odLat">Od lat(0 - b.o.):</form:label></td>
+            <td><form:input type="number" min="0" max="18" path="odLat" value="${film.odLat}"/></td>
         </tr>
         <tr>
-            <td><form:label path="opis">opis:</form:label></td>
-            <td><form:input path="opis" value="${film.opis}" /></td>
+            <td><form:label path="opis">Opis:</form:label></td>
+            <td> <form:textarea cols="100" rows="3" path="opis" value="${film.opis}" /></td>
         </tr>
         <tr>
-            <td><form:label path="aktorzy">wiek:</form:label></td>
-            <td><form:input path="aktorzy" value="${film.aktorzy}" /></td>
+            <td><form:label path="aktorzy">Aktorzy:</form:label></td>
+            <td><form:textarea cols="100" rows="2" path="aktorzy" value="${film.aktorzy}" /></td>
         </tr>
 
         <tr>
                     <c:if test="${!empty film.tytul}">
-        				<input type="submit" value="<spring:message text='Edit Film'/>" />
+        				<td/><td><input type="submit" value="<spring:message text='Zatwierdz zmiany'/>" /></td>
         			</c:if>
         			<c:if test="${empty film.tytul}">
-        				<input type="submit" value="<spring:message text="Add Film"/>" />
+        				<td/><td><input type="submit" value="<spring:message text="Dodaj film"/>" /></td>
         			</c:if>
         </tr>
     </table>

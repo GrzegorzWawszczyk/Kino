@@ -12,6 +12,7 @@ public interface SeansDAO {
 	public void addSeans(Seans seans);
 	public void updateSeans(Seans seans);
     public Seans getsSeansById(int id);
+    public void remove(int id);
     public List<Seans> listOfSeanse();
     public List<Seans> listOfSeansesByFilm(int idFilm);
 }

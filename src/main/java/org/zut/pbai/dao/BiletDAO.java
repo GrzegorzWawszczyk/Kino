@@ -15,6 +15,7 @@ public interface BiletDAO {
     public List<Bilet> listOfBiletsByUser(int userId);
     public List<Bilet> listOfBiletsBySeans(int seansId);
     public List<Bilet> listOfBilets();
+    public List<Bilet> listOfBiletsBySeansAndSeatAvaible(int id, String seat);
     public List<Bilet> listOfBiletsBySeansAndSeat(int id, String seat);
     public Bilet getBiletById(int id);
 }
